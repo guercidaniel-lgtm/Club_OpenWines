@@ -58,7 +58,7 @@ header.site-header {
 
 .header-logo { display: block; height: 54px; width: auto; }
 .header-claim {
-  color: var(--gold);
+  color: var(--white);
   font-size: 0.85rem;
   font-style: italic;
   font-weight: 500;
