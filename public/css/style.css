@@ -57,6 +57,15 @@ header.site-header {
 .wordmark span { color: var(--gold); }
 
 .header-logo { display: block; height: 54px; width: auto; }
+.header-claim {
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  flex: 1;
+  text-align: center;
+}
 .footer-logo { display: block; height: 90px; width: auto; margin: 0 auto 10px; }
 
 .header-actions button, .header-actions a {
