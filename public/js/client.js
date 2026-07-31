@@ -468,26 +468,7 @@
     window.open(`https://wa.me/${state.business.whatsapp}?text=${text}`, '_blank');
   });
 
-  // ---------- Cupones ----------
-  $('#btn-apply-coupon').addEventListener('click', async () => {
-    const code = $('#cart-coupon').value.trim().toUpperCase();
-    const status = $('#coupon-status');
-    if (!code) return status.textContent = '❌ Ingresá un código';
-    try {
-      const data = await api('/api/apply-coupon', {
-        method: 'POST',
-        body: JSON.stringify({ phone: state.client.phone, couponCode: code }),
-      });
-      appliedCoupon = { code, discount: data.discountAmount };
-      status.textContent = `✅ ${data.message}`;
-      $('#cart-coupon').disabled = true;
-      $('#btn-apply-coupon').disabled = true;
-      renderCartItems();
-    } catch (err) {
-      status.textContent = `❌ ${err.message}`;
-    }
-  });
-
+  
   // ---------- Referidos ----------
   $('#form-referral').addEventListener('submit', async (e) => {
     e.preventDefault();
