@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Club Openwines</title>
+<meta name="theme-color" content="#6F276D">
+<meta name="description" content="Membresía y combos semanales de Club Openwines">
+
+<link rel="manifest" href="/manifest.json?v=2">
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Openwines">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/"><img src="/assets/logo-white.png" alt="Club Openwines" class="header-logo"></a>
+  <div class="header-actions">
+    <button id="btn-logout" class="hidden">Salir</button>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<div id="login-screen" class="container">
+  <div class="card">
+    <h2>Club Openwines</h2>
+    <p class="muted">Ingresá con tu número de teléfono.</p>
+    <form id="form-login">
+      <label for="login-phone">Teléfono</label>
+      <input id="login-phone" type="tel" placeholder="Ej: 3511234567" required>
+      <div id="name-field" class="hidden">
+        <label for="login-name">¿Primera vez? Contanos tu nombre</label>
+        <input id="login-name" type="text" placeholder="Nombre y apellido">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+      <p id="login-error" class="muted hidden" style="color:var(--red)"></p>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="container hidden">
+
+  <div class="card">
+    <div class="flex-between">
+      <div>
+        <h2 id="client-name">Hola</h2>
+        <span id="level-badge" class="level-badge">Nivel</span>
+        <span id="welcome-badge" class="badge-welcome hidden">15% off tu primera compra</span>
+        <button type="button" id="btn-show-levels" class="btn btn-outline" style="padding:4px 12px;font-size:.8rem;margin-left:8px;">Niveles y beneficios</button>
+      </div>
+      <div class="text-center">
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--violet)" id="points-value">0</div>
+        <div class="muted">puntos</div>
+      </div>
+    </div>
+    <div id="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <p class="muted" id="progress-text"></p>
+    </div>
+    <p class="muted" id="benefits-text"></p>
+  </div>
+
+  <!-- Notificaciones -->
+  <div id="push-opt-in" class="hidden" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin:14px 0;">
+    <span class="muted" id="push-opt-in-text">🔔 Activá las notificaciones para enterarte apenas suben combos nuevos.</span>
+    <button type="button" class="btn btn-gold" id="btn-toggle-push" style="white-space:nowrap;padding:6px 14px;font-size:.85rem;">Activar</button>
+  </div>
+
+  <!-- Bienvenida referidos / restaurante -->
+  <div id="welcome-referral-card" class="card hidden" style="border:2px solid var(--gold); background:linear-gradient(135deg, #fff, var(--cream));">
+    <h3 style="margin-bottom:6px;">¡Bienvenido a Club Openwines!</h3>
+    <p id="welcome-referral-text"></p>
+  </div>
+
+  <!-- Completar perfil -->
+  <div id="profile-card" class="card hidden">
+    <h3>Completá tu perfil y sumá 150 puntos</h3>
+    <p class="muted">Contanos tu cumpleaños y qué varietales preferís.</p>
+    <form id="form-profile">
+      <label for="profile-birthday">Fecha de nacimiento</label>
+      <input id="profile-birthday" type="date" required>
+      <label>Preferencias de varietal</label>
+      <div class="row" id="prefs-options"></div>
+      <br>
+      <button type="submit" class="btn btn-gold">Sumar 150 puntos</button>
+    </form>
+  </div>
+
+  <!-- Preferencias de Vino -->
+  <div id="prefs-card" class="card hidden">
+    <div class="flex-between">
+      <h3 style="margin:0;">🍷 Mis preferencias de vino</h3>
+      <button type="button" class="btn btn-outline" id="btn-edit-prefs" style="padding:6px 14px;font-size:0.9em;">Editar</button>
+    </div>
+    <div id="prefs-display" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- Combos -->
+  <div class="card">
+    <h3>Combos de la semana</h3>
+    <div id="combos-grid" class="grid"></div>
+    <p class="combo-web-note">
+      Diseñá tu experiencia en nuestra web armá el combo perfecto para cada momento<br>
+      <span class="click-emoji" aria-hidden="true">👉</span>
+      <a href="https://www.openwines.com.ar" target="_blank" rel="noopener">www.openwines.com.ar</a>
+      <br><span style="font-size: 0.9em; color: var(--text-muted); margin-top: 8px; display: block;">🚚 Envío sin cargo en Río Cuarto</span>
+    </p>
+  </div>
+
+  <!-- Referidos -->
+  <div class="card referral-card">
+    <h3>🎁 Recomendá a un amigo</h3>
+    <div class="referral-stats">
+      <div class="referral-stat">
+        <div class="referral-stat-value">15%</div>
+        <div class="referral-stat-label">OFF para tu amigo<br>en su primera compra</div>
+      </div>
+      <div class="referral-stat">
+        <div class="referral-stat-value">+300</div>
+        <div class="referral-stat-label">puntos para vos<br>cuando confirme su compra</div>
+      </div>
+    </div>
+    <form id="form-referral">
+      <label for="ref-name">Nombre del amigo</label>
+      <input id="ref-name" type="text" required>
+      <label for="ref-phone">Teléfono del amigo</label>
+      <input id="ref-phone" type="tel" required>
+      <button type="submit" class="btn btn-whatsapp">Invitar por WhatsApp</button>
+    </form>
+  </div>
+
+  <!-- Bodegas -->
+  <div class="card">
+    <button type="button" class="section-toggle" id="toggle-wineries" aria-expanded="false">
+      <h3>Nuestras Bodegas</h3>
+      <span class="toggle-icon">▾</span>
+    </button>
+    <div id="wineries-grid" class="grid hidden"></div>
+  </div>
+
+  <!-- Restaurantes -->
+  <div class="card">
+    <button type="button" class="section-toggle" id="toggle-restaurants" aria-expanded="false">
+      <h3>Dónde tomar nuestros vinos</h3>
+      <span class="toggle-icon">▾</span>
+    </button>
+    <div id="restaurants-list" class="hidden"></div>
+  </div>
+
+  <!-- Momentos Openwines -->
+  <div class="card">
+    <button type="button" class="section-toggle" id="toggle-moments" aria-expanded="false">
+      <h3>Momentos Openwines</h3>
+      <span class="toggle-icon">▾</span>
+    </button>
+    <div id="moments-grid" class="grid hidden"></div>
+  </div>
+</div>
+
+<footer class="text-center" style="padding:30px 20px 50px;">
+  <img src="/assets/logo-color.png" alt="" class="footer-logo">
+  <span class="wordmark" style="color:var(--violet)">open<span style="color:var(--gold-dark)">wines</span></span>
+  <p class="muted" style="margin-top:8px;">
+    <a href="https://www.openwines.com.ar" target="_blank" rel="noopener">openwines.com.ar</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/open.wines" target="_blank" rel="noopener">@open.wines</a>
+  </p>
+</footer>
+
+<!-- Barra flotante de carrito -->
+<div id="cart-bar" class="cart-bar hidden">
+  <span id="cart-bar-summary"></span>
+  <button type="button" class="btn btn-gold" id="cart-bar-open">Ver pedido</button>
+</div>
+
+<!-- Modal carrito -->
+<div id="cart-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;">
+  <div class="card" style="max-width:420px;width:100%;max-height:85vh;overflow-y:auto;">
+    <div class="flex-between">
+      <h3 style="margin:0;">Tu pedido</h3>
+      <button type="button" class="btn btn-outline" id="cart-modal-close">Cerrar</button>
+    </div>
+    <div id="cart-items" style="margin:14px 0;"></div>
+
+    <div style="margin-bottom:14px;padding:12px;background:#f0f7ff;border-radius:8px;border-left:4px solid var(--blue);">
+      <p class="flex-between" style="margin:0 0 8px;font-size:0.9em;">
+        <span>Subtotal</span><span id="cart-subtotal" style="font-weight:600;">$0</span>
+      </p>
+      <p id="referral-discount" class="flex-between" style="margin:0 0 8px;font-size:0.9em;color:var(--blue);display:none;">
+        <span>Descuento cliente referido (15%)</span><span style="font-weight:600;">-<span id="referral-discount-amount">$0</span></span>
+      </p>
+      <p id="coupon-discount" class="flex-between" style="margin:0 0 8px;font-size:0.9em;color:var(--blue);display:none;">
+        <span>Código de descuento</span><span style="font-weight:600;">-<span id="coupon-discount-amount">$0</span></span>
+      </p>
+    </div>
+
+    <div style="margin-bottom:14px;padding:12px;background:var(--cream);border-radius:8px;">
+      <label for="cart-coupon" style="display:block;margin-bottom:6px;font-size:0.9em;">Código de descuento (opcional)</label>
+      <div style="display:flex;gap:6px;">
+        <input id="cart-coupon" type="text" placeholder="Ej: LUCKY42X9FMBU" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:6px;">
+        <button type="button" class="btn btn-gold" id="btn-apply-coupon" style="white-space:nowrap;padding:8px 14px;font-size:0.9em;">Aplicar</button>
+      </div>
+      <p id="coupon-status" class="muted" style="margin:6px 0 0;font-size:0.85em;"></p>
+    </div>
+
+    <p class="flex-between" style="font-weight:700;font-size:1.2rem;background:var(--cream);padding:12px;border-radius:8px;">
+      <span>Total a pagar</span><span id="cart-total"></span>
+    </p>
+    <label for="cart-payment">Forma de pago</label>
+    <select id="cart-payment">
+      <option value="Transferencia">Transferencia</option>
+      <option value="Efectivo">Efectivo</option>
+      <option value="Tarjeta">Tarjeta</option>
+    </select>
+    <div class="row" style="margin-top:10px;">
+      <button type="button" class="btn btn-primary" id="cart-confirm-app">Confirmar en la app</button>
+      <button type="button" class="btn btn-whatsapp" id="cart-send-whatsapp">Enviar por WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal niveles y beneficios -->
+<div id="levels-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;">
+  <div class="card" style="max-width:480px;width:100%;max-height:85vh;overflow-y:auto;">
+    <div class="flex-between">
+      <h3 style="margin:0;">Niveles y beneficios</h3>
+      <button type="button" class="btn btn-outline" id="levels-close">Cerrar</button>
+    </div>
+    <p class="muted" style="margin:10px 0 0;">Sumás <strong>1 punto cada $1.000</strong> de compra.</p>
+    <div id="levels-list" style="margin-top:14px;"></div>
+  </div>
+</div>
+
+<div id="scratch-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none !important;align-items:center;justify-content:center;z-index:200;padding:20px;">
+  <div class="card" style="max-width:420px;width:100%;text-align:center;">
+    <h3 id="scratch-title" style="margin-top:0;">🎁 Probá tu suerte</h3>
+    <p id="scratch-subtitle" class="muted">Hace click y probá tu suerte</p>
+
+    <div id="scratch-container" style="position:relative;width:100%;max-width:300px;margin:20px auto;aspect-ratio:4/3;border-radius:12px;overflow:hidden;">
+      <button id="btn-reveal-prize" style="width:100%;height:100%;background:linear-gradient(135deg,#d4af37,#f0e68c);border:none;border-radius:12px;font-size:1.3em;font-weight:bold;cursor:pointer;color:#000;transition:all 0.3s;">
+        🎁 Ver mi premio
+      </button>
+      <div id="scratch-confetti" style="position:absolute;inset:0;pointer-events:none;"></div>
+    </div>
+
+    <div id="scratch-result" class="hidden">
+      <p style="font-size:1.2em;font-weight:600;margin:16px 0;" id="scratch-result-text"></p>
+      <form id="form-scratch-email" style="margin:16px 0;">
+        <label for="scratch-email" style="display:block;text-align:left;margin-bottom:8px;font-weight:600;">Tu email (para el cupón):</label>
+        <input id="scratch-email" type="email" placeholder="tu@email.com" required style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:12px;">
+        <button type="submit" class="btn btn-gold btn-block">Generar cupón</button>
+      </form>
+      <button type="button" class="btn btn-outline btn-block" id="btn-skip-scratch">Saltar por ahora</button>
+    </div>
+
+    <div id="scratch-coupon" class="hidden" style="margin:16px 0;padding:16px;background:var(--cream);border-radius:8px;">
+      <p style="margin:0 0 12px;font-size:0.9em;color:var(--text-muted);">Tu código:</p>
+      <div style="font-size:1.5em;font-weight:bold;letter-spacing:2px;word-break:break-all;margin:12px 0;font-family:monospace;" id="scratch-code"></div>
+      <p style="margin:12px 0 0;font-size:0.85em;color:var(--text-muted);">Válido por 30 días • Uso único en checkout</p>
+      <button type="button" class="btn btn-outline btn-block" id="btn-copy-coupon" style="margin-top:12px;">Copiar código</button>
+      <button type="button" class="btn btn-gold btn-block" id="btn-close-scratch">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="prefs-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;">
+  <div class="card" style="max-width:600px;width:100%;max-height:85vh;overflow-y:auto;">
+    <div class="flex-between">
+      <h3 style="margin:0;">Mis preferencias de vino</h3>
+      <button type="button" class="btn btn-outline" id="prefs-close">Cerrar</button>
+    </div>
+    <p class="muted" style="margin:10px 0 12px;">Actualizá tus preferencias para recomendaciones personalizadas.</p>
+    <form id="form-prefs-edit">
+      <div id="prefs-edit-options" style="margin-bottom:16px;"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button type="button" class="btn btn-outline" id="prefs-cancel">Cancelar</button>
+        <button type="submit" class="btn btn-gold">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/js/client.js"></script>
+</body>
+</html>

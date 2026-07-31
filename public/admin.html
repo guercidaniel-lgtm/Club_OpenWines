@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Club Openwines · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" style="display:flex;align-items:center;gap:10px;">
+    <img src="/assets/logo-white.png" alt="Club Openwines" class="header-logo">
+    <span style="color:#fff;font-size:.9rem;font-family:'Open Sans'">· admin</span>
+  </a>
+  <div class="header-actions"><button id="btn-relogin">Cambiar clave</button></div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button data-tab="clientes" class="active">Clientes</button>
+    <button data-tab="importar">Importar</button>
+    <button data-tab="combos">Combos</button>
+    <button data-tab="restaurantes">Restaurantes</button>
+    <button data-tab="momentos">Momentos</button>
+    <button data-tab="pedidos">Pedidos</button>
+    <button data-tab="referidos">Recomendaciones</button>
+    <button data-tab="cumple">Cumpleaños</button>
+    <button data-tab="cupones">Cupones</button>
+    <button data-tab="reporte">Reporte</button>
+  </div>
+
+  <!-- CLIENTES -->
+  <section id="tab-clientes" class="tab-panel">
+    <div class="card">
+      <h3>Alta manual de cliente</h3>
+      <form id="form-new-client">
+        <div class="row">
+          <input id="nc-name" placeholder="Nombre" required style="flex:2">
+          <input id="nc-phone" placeholder="Teléfono" required style="flex:1">
+          <select id="nc-origin" style="flex:1">
+            <option value="organico">Orgánico</option>
+            <option value="referido">Referido</option>
+            <option value="restaurante">Restaurante</option>
+          </select>
+          <input id="nc-origin-detail" placeholder="Detalle (amigo / restaurante)" style="flex:1">
+        </div>
+        <button class="btn btn-primary" type="submit">Agregar cliente</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Cargar compra</h3>
+      <form id="form-purchase">
+        <div class="row">
+          <input id="p-phone" placeholder="Teléfono del cliente" required style="flex:2">
+          <input id="p-amount" type="number" placeholder="Monto ARS" required style="flex:1">
+        </div>
+        <button class="btn btn-gold" type="submit">Cargar compra</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Clientes</h3>
+      <div class="table-wrap">
+        <table id="table-clients"><thead><tr><th>Nombre</th><th>Teléfono</th><th>Nivel</th><th>Puntos</th><th>Cumpleaños</th><th>Preferencias de vino</th><th>Origen</th><th>Detalle</th><th>Alta</th><th>Acciones</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPORTAR -->
+  <section id="tab-importar" class="tab-panel hidden">
+    <div class="card">
+      <h3>Importar clientes desde Excel/CSV</h3>
+      <input type="file" id="import-file" accept=".xlsx,.xls,.csv">
+      <div id="import-mapping" class="hidden">
+        <p class="muted">Elegí qué columna corresponde a cada dato:</p>
+        <div class="row">
+          <div><label>Nombre</label><select id="map-name"></select></div>
+          <div><label>Teléfono</label><select id="map-phone"></select></div>
+          <div><label>Monto (opcional)</label><select id="map-amount"><option value="">— ninguna —</option></select></div>
+        </div>
+        <p class="muted" id="import-preview-count"></p>
+        <button class="btn btn-primary" id="btn-import-run">Importar</button>
+      </div>
+      <div id="import-results"></div>
+    </div>
+  </section>
+
+  <!-- COMBOS -->
+  <section id="tab-combos" class="tab-panel hidden">
+    <div class="card">
+      <h3>Nuevo combo</h3>
+      <form id="form-combo">
+        <div class="row">
+          <input id="c-name" placeholder="Nombre del combo" required style="flex:2">
+          <input id="c-bottles" type="number" placeholder="Botellas" required style="flex:1">
+          <input id="c-price" type="number" placeholder="Precio ARS" required style="flex:1">
+        </div>
+        <textarea id="c-description" placeholder="Descripción"></textarea>
+        <label for="c-anticipo">Anticipo para Plata/Oro</label>
+        <select id="c-anticipo">
+          <option value="0">Sin anticipo</option>
+          <option value="24">24 horas</option>
+          <option value="48">48 horas</option>
+        </select>
+        <label for="c-image">Imagen del combo (jpg/png, máx 3MB, opcional)</label>
+        <input id="c-image" type="file" accept="image/jpeg,image/png">
+        <label for="c-valid-until">Vence (opcional — pasada esta fecha, deja de mostrarse al cliente)</label>
+        <input id="c-valid-until" type="date">
+        <button class="btn btn-primary" type="submit">Crear combo</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Combos cargados</h3>
+      <div class="table-wrap">
+        <table id="table-combos"><thead><tr><th>Imagen</th><th>Nombre</th><th>Botellas</th><th>Precio</th><th>Anticipo</th><th>Vence</th><th>Estado</th><th>Creado</th><th></th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESTAURANTES -->
+  <section id="tab-restaurantes" class="tab-panel hidden">
+    <div class="card">
+      <h3>Imagen de fondo por restaurante</h3>
+      <p class="muted">Se usa difuminada como fondo de la tarjeta en la vista cliente.</p>
+      <div id="restaurants-admin-list"></div>
+    </div>
+  </section>
+
+  <!-- MOMENTOS -->
+  <section id="tab-momentos" class="tab-panel hidden">
+    <div class="card">
+      <h3>Nuevo momento</h3>
+      <form id="form-moment">
+        <label for="m-image">Foto (jpg/png, máx 3MB)</label>
+        <input id="m-image" type="file" accept="image/jpeg,image/png" required>
+        <div class="row">
+          <input id="m-location" placeholder="Dónde se realizó (ej. Bodega Sottano, Luján de Cuyo)" style="flex:1">
+          <input id="m-winery" placeholder="Con qué bodega (ej. Bodega Sottano)" style="flex:1">
+        </div>
+        <button class="btn btn-primary" type="submit">Agregar momento</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Momentos cargados</h3>
+      <div id="moments-admin-list" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- PEDIDOS -->
+  <section id="tab-pedidos" class="tab-panel hidden">
+    <div class="card">
+      <h3>Pedidos</h3>
+      <div class="table-wrap">
+        <table id="table-orders"><thead><tr><th>Cliente</th><th>Teléfono</th><th>Combo</th><th>Cant.</th><th>Subtotal</th><th>Desc. Ref.</th><th>Desc. Cupón</th><th>Total</th><th>Cupón</th><th>Pago</th><th>Fecha</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERIDOS -->
+  <section id="tab-referidos" class="tab-panel hidden">
+    <div class="card">
+      <h3>Recomendaciones</h3>
+      <div class="table-wrap">
+        <table id="table-referrals"><thead><tr><th>Quien refiere</th><th>Tel. referente</th><th>Amigo</th><th>Tel. amigo</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUMPLEAÑOS -->
+  <section id="tab-cumple" class="tab-panel hidden">
+    <div class="card">
+      <h3>Cumpleaños del mes · Nivel Oro</h3>
+      <div id="birthdays-list"></div>
+    </div>
+  </section>
+
+  <!-- CUPONES -->
+  <section id="tab-cupones" class="tab-panel hidden">
+    <div class="card">
+      <h3>Cupones "Probá tu suerte"</h3>
+      <div class="table-wrap">
+        <table id="table-cupones"><thead><tr><th>Cliente (Email)</th><th>Premio</th><th>Cupón</th><th>Generado</th><th>Vencimiento</th><th>Usado</th><th>Acciones</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORTE -->
+  <section id="tab-reporte" class="tab-panel hidden">
+    <div class="card">
+      <h3>Altas del mes por origen</h3>
+      <div id="report-chart"></div>
+    </div>
+  </section>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="/js/admin.js"></script>
+</body>
+</html>
