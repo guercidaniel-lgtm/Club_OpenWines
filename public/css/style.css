@@ -172,13 +172,14 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .progress-fill { background: var(--violet-light); height: 100%; }
 
 .badge-welcome {
+  display: inline-flex;
+  align-items: center;
   background: var(--red);
   color: var(--white);
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: .8rem;
-  font-weight: 700;
-  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 /* Grids */
