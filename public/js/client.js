@@ -25,8 +25,6 @@
   let countdownTimers = [];
   let cart = {}; // combo_id -> cantidad, para armar un pedido de varios combos antes de enviarlo
   let appliedCoupon = null; // cupón aplicado al carrito
-  let selectedPrize = null; // premio seleccionado en scratch card
-  let scratchModalShown = false; // flag para evitar que se abra múltiples veces
 
   const $ = (sel) => document.querySelector(sel);
   const loginScreen = $('#login-screen');
@@ -170,7 +168,7 @@
     renderRestaurants(data.restaurants);
     renderMoments(data.moments);
     setupPushOptIn();
-    //  desactivado - modal siempre oculto
+    // setupScratchCard desactivado - modal siempre oculto
   }
 
   // ---------- Niveles y beneficios ----------
@@ -654,131 +652,6 @@
     }
   });
 
-  // ---------- Scratch Card ----------
-  function createConfetti() {
-    const confetti = $('#scratch-confetti');
-    const emojis = ['🎉', '✨', '🎁', '🎊', '⭐', '💫', '🎈'];
-
-    for (let i = 0; i < 20; i++) {
-      const span = document.createElement('div');
-      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      span.style.cssText = `
-        position: absolute;
-        left: ${Math.random() * 100}%;
-        top: -20px;
-        font-size: ${20 + Math.random() * 20}px;
-        animation: fall ${2 + Math.random() * 1}s ease-in forwards;
-        opacity: 0.8;
-      `;
-      confetti.appendChild(span);
-    }
-  }
-
-  function (data) {
-    // TEST: No hacer nada por ahora
-    return;
-
-    btn.addEventListener('click', () => {
-      $('#scratch-modal').classList.remove('hidden');
-      btn.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        btn.style.transform = 'scale(1)';
-      }, 100);
-
-      const isBirthday = client.birthday && new Date().toISOString().slice(5, 10) === client.birthday.slice(5, 10);
-
-      createConfetti();
-
-      setTimeout(() => {
-        $('#scratch-title').style.display = 'none';
-        $('#scratch-subtitle').style.display = 'none';
-        $('#scratch-container').style.display = 'none';
-        $('#scratch-result').classList.remove('hidden');
-        (isBirthday);
-
-        // Si es mala suerte (retry), ocultar formulario de email
-        if (selectedPrize === 'retry') {
-          $('#').style.display = 'none';
-          $('#').style.display = 'none';
-          // Agregar botón "Cerrar" en su lugar
-          const closeBtn = document.createElement('button');
-          closeBtn.type = 'button';
-          closeBtn.className = 'btn btn-outline btn-block';
-          closeBtn.textContent = 'Cerrar';
-          closeBtn.addEventListener('click', () => {
-            if (!state || !state.client) return;
-            // Marcar que el usuario vio el modal (aunque no ganó nada)
-            state.hasScratchCard = true;
-            localStorage.setItem('scratch_claimed_' + state.client.phone, 'true');
-            $('#scratch-modal').classList.add('hidden');
-          });
-          $('#scratch-result').appendChild(closeBtn);
-        }
-      }, 300);
-    });
-  }
-
-  function (isBirthday) {
-    const prizes = isBirthday
-      ? [
-          { text: '🎉 ¡Feliz cumpleaños! Ganaste $5.000 OFF', code: '$5000' },
-          { text: '🎂 ¡Feliz cumpleaños! Ganaste $10.000 OFF', code: '$10000' },
-          { text: '🎁 ¡Feliz cumpleaños! +500 puntos bonus', code: 'points500' }
-        ]
-      : [
-          { text: '🎉 ¡Ganaste $10.000 OFF!', code: '$10000' },
-          { text: '🎉 ¡Ganaste $5.000 OFF en tu próxima compra!', code: '$5000' },
-          { text: '🎉 Ganaste $2.500 OFF', code: '$2500' },
-          { text: '🎉 ¡+500 puntos bonus!', code: 'points500' },
-          { text: '¡Mejor suerte mañana! Intenta de nuevo.', code: 'retry' }
-        ];
-    const selected = prizes[Math.floor(Math.random() * prizes.length)];
-    selectedPrize = selected.code;
-    $('#scratch-result-text').textContent = selected.text;
-  }
-
-  $('#').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!state || !state.client) return;
-    const email = $('#scratch-email').value.trim();
-
-    try {
-      const data = await api('/api/scratch-card-claim', {
-        method: 'POST',
-        body: JSON.stringify({ phone: state.client.phone, email, prize: selectedPrize, isBirthday: false }),
-      });
-
-      // Guardar en localStorage que vio el modal
-      localStorage.setItem('scratch_viewed_' + state.client.phone, 'true');
-
-      if (data.couponCode) {
-        $('#scratch-code').textContent = data.couponCode;
-        $('#scratch-coupon').classList.remove('hidden');
-        $('#scratch-result').classList.add('hidden');
-      } else {
-        toast('Mejor suerte mañana. ¡Intenta de nuevo!');
-        $('#scratch-email').value = '';
-        $('#scratch-result').textContent = '¡Mejor suerte mañana! Intenta de nuevo.';
-      }
-    } catch (err) {
-      toast(err.message);
-    }
-  });
-
-  $('#').addEventListener('click', () => {
-    const code = $('#scratch-code').textContent;
-    navigator.clipboard.writeText(code).then(() => toast('¡Código copiado!')).catch(() => toast('Error al copiar'));
-  });
-
-  $('#').addEventListener('click', () => $('#scratch-modal').classList.add('hidden'));
-
-  $('#').addEventListener('click', () => {
-    if (!state || !state.client) return;
-    state.client.scratch_card_claimed = true;
-    localStorage.setItem('scratch_claimed_' + state.client.phone, 'true');
-    $('#scratch-modal').classList.add('hidden');
-    toast('Dale, próximo premio te espera.');
-  });
 
   // ---------- Init ----------
   if ('serviceWorker' in navigator) {
