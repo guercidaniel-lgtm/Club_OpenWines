@@ -170,7 +170,7 @@
     renderRestaurants(data.restaurants);
     renderMoments(data.moments);
     setupPushOptIn();
-    // setupScratchCard desactivado - modal siempre oculto
+    //  desactivado - modal siempre oculto
   }
 
   // ---------- Niveles y beneficios ----------
@@ -674,7 +674,7 @@
     }
   }
 
-  function setupScratchCard(data) {
+  function (data) {
     // TEST: No hacer nada por ahora
     return;
 
@@ -694,12 +694,12 @@
         $('#scratch-subtitle').style.display = 'none';
         $('#scratch-container').style.display = 'none';
         $('#scratch-result').classList.remove('hidden');
-        generatePrizeText(isBirthday);
+        (isBirthday);
 
         // Si es mala suerte (retry), ocultar formulario de email
         if (selectedPrize === 'retry') {
-          $('#form-scratch-email').style.display = 'none';
-          $('#btn-skip-scratch').style.display = 'none';
+          $('#').style.display = 'none';
+          $('#').style.display = 'none';
           // Agregar botón "Cerrar" en su lugar
           const closeBtn = document.createElement('button');
           closeBtn.type = 'button';
@@ -718,7 +718,7 @@
     });
   }
 
-  function generatePrizeText(isBirthday) {
+  function (isBirthday) {
     const prizes = isBirthday
       ? [
           { text: '🎉 ¡Feliz cumpleaños! Ganaste $5.000 OFF', code: '$5000' },
@@ -737,7 +737,7 @@
     $('#scratch-result-text').textContent = selected.text;
   }
 
-  $('#form-scratch-email').addEventListener('submit', async (e) => {
+  $('#').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!state || !state.client) return;
     const email = $('#scratch-email').value.trim();
@@ -765,14 +765,14 @@
     }
   });
 
-  $('#btn-copy-coupon').addEventListener('click', () => {
+  $('#').addEventListener('click', () => {
     const code = $('#scratch-code').textContent;
     navigator.clipboard.writeText(code).then(() => toast('¡Código copiado!')).catch(() => toast('Error al copiar'));
   });
 
-  $('#btn-close-scratch').addEventListener('click', () => $('#scratch-modal').classList.add('hidden'));
+  $('#').addEventListener('click', () => $('#scratch-modal').classList.add('hidden'));
 
-  $('#btn-skip-scratch').addEventListener('click', () => {
+  $('#').addEventListener('click', () => {
     if (!state || !state.client) return;
     state.client.scratch_card_claimed = true;
     localStorage.setItem('scratch_claimed_' + state.client.phone, 'true');
