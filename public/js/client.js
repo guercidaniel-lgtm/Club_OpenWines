@@ -125,10 +125,11 @@
 
     const welcomeCard = $('#welcome-referral-card');
     if (welcomeDiscount && (client.origin === 'referido' || client.origin === 'restaurante')) {
-      const who = client.origin === 'referido'
-        ? (client.origin_detail ? `${escapeHtml(client.origin_detail)} te recomendó` : 'Te recomendaron')
-        : (client.origin_detail ? `Llegaste desde ${escapeHtml(client.origin_detail)}` : 'Llegaste por uno de nuestros restaurantes aliados');
-      $('#welcome-referral-text').innerHTML = `${who} Club Openwines. Tenés <strong>15% OFF</strong> en tu primera compra.`;
+      if (client.origin === 'referido') {
+        $('#welcome-referral-text').innerHTML = `${escapeHtml(client.origin_detail || 'Alguien')} te recomendo Club Openwines. Tenés un <strong>5%</strong> en tu próxima compra.`;
+      } else {
+        $('#welcome-referral-text').innerHTML = `Llegaste desde ${escapeHtml(client.origin_detail || 'uno de nuestros restaurantes aliados')} a Club Openwines. Tenés <strong>5%</strong> en tu próxima compra.`;
+      }
       welcomeCard.classList.remove('hidden');
     } else {
       welcomeCard.classList.add('hidden');
