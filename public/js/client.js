@@ -475,6 +475,13 @@
 
     const text = encodeURIComponent(message);
     window.open(`https://wa.me/${state.business.whatsapp}?text=${text}`, '_blank');
+
+    // Limpiar carrito y cerrar modal después de enviar
+    cart = {};
+    appliedCoupon = null;
+    $('#cart-modal').classList.add('hidden');
+    $('#cart-bar').classList.add('hidden');
+    toast('¡Pedido enviado por WhatsApp!');
   });
 
 
