@@ -510,10 +510,20 @@
           friend_phone,
         }),
       });
+      // Sanitizar teléfono para WhatsApp: mantener solo dígitos y el +
+      let cleanPhone = friend_phone.replace(/[\s\-\(\)]/g, '').trim();
+      // Si tiene +, remover espacios adicionales y validar
+      if (cleanPhone.startsWith('+')) {
+        cleanPhone = '+' + cleanPhone.replace(/\D/g, '');
+      } else {
+        // Si no tiene +, asumir que es Argentina y agregar código de país
+        cleanPhone = '+54' + cleanPhone.replace(/\D/g, '');
+      }
+
       const text = encodeURIComponent(
         `Hola ${friend_name}! Te invito al Club Openwines de nuestra vinoteca. Arrancás con 10% OFF en tu primera compra. Sumate acá: ${APP_URL} 🍷`
       );
-      window.open(`https://wa.me/${friend_phone.replace(/\D/g, '')}?text=${text}`, '_blank');
+      window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
       $('#form-referral').reset();
       toast('¡Invitación enviada!');
     } catch (err) {
