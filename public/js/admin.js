@@ -431,13 +431,26 @@
           <td>${escapeHtml(r.friend_name)}</td>
           <td>${escapeHtml(r.friend_phone)}</td>
           <td>${r.status}</td>
-          <td>${r.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm" data-id="${r.id}">Confirmar primera compra</button>` : ''}</td>
+          <td style="display:flex;gap:6px;">
+            ${r.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm" data-id="${r.id}" style="flex:1;">Confirmar primera compra</button>` : ''}
+            <button class="btn btn-outline btn-delete-referral" data-id="${r.id}" style="flex:0 0 auto; padding:6px 12px; font-size:0.85em;" title="Eliminar recomendación">✕</button>
+          </td>
         </tr>`).join('');
       document.querySelectorAll('.btn-confirm').forEach((btn) => {
         btn.addEventListener('click', async () => {
           try {
             await api('/api/admin-referrals', { method: 'POST', body: JSON.stringify({ referral_id: btn.dataset.id }) });
             toast('Referido confirmado, +300 puntos acreditados');
+            loadReferrals();
+          } catch (err) { toast(err.message); }
+        });
+      });
+      document.querySelectorAll('.btn-delete-referral').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('¿Eliminar esta recomendación?')) return;
+          try {
+            await api('/api/admin-referrals', { method: 'DELETE', body: JSON.stringify({ referral_id: btn.dataset.id }) });
+            toast('Recomendación eliminada');
             loadReferrals();
           } catch (err) { toast(err.message); }
         });

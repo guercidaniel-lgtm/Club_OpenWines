@@ -38,6 +38,13 @@ exports.handler = async (event) => {
       });
       return json(200, { referral: updated[0] });
     }
+    if (event.httpMethod === 'DELETE') {
+      const { referral_id } = JSON.parse(event.body || '{}');
+      if (!referral_id) return json(400, { error: 'referral_id requerido' });
+
+      await sb(`referrals?id=eq.${referral_id}`, { method: 'DELETE' });
+      return json(200, { message: 'Recomendación eliminada' });
+    }
     return json(405, { error: 'Method not allowed' });
   } catch (err) {
     return json(500, { error: err.message });
