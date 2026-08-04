@@ -1,7 +1,7 @@
 const { sb } = require('./_supabase');
 const { json } = require('./_http');
 
-const VALID_PREFS = ['Malbec', 'Cabernet Sauvignon', 'Cabernet Franc', 'Syrah', 'Merlot', 'Petit Verdot', 'Bonarda', 'Pinot Noir', 'Tempranillo', 'Garnacha', 'Sauvignon Blanc', 'Torrontés', 'Viognier', 'Chardonnay', 'Blanco Dulce', 'Rosé', 'Espumante Brut', 'Extra Brut', 'Brut Rosé', 'Blend', 'Ancellotta'];
+const VALID_PREFS = ['Malbec', 'Cabernet Sauvignon', 'Cabernet Franc', 'Syrah', 'Merlot', 'Petit Verdot', 'Bonarda', 'Pinot Noir', 'Tempranillo', 'Garnacha', 'Sauvignon Blanc', 'Torrontés', 'Viognier', 'Chardonnay', 'Blanco Dulce', 'Rosé', 'Espumante Brut', 'Extra Brut', 'Brut Rosé', 'Ancellotta'];
 
 // Bono de 150 puntos, una única vez, al completar fecha de nacimiento +
 // preferencias de varietal. El flag profile_complete evita el doble bono.

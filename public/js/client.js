@@ -1,12 +1,9 @@
 (() => {
   const APP_URL = 'https://club-openwines.netlify.app/';
   const PREFS_BY_TYPE = {
-    'Tintos': ['Malbec', 'Cabernet Sauvignon', 'Cabernet Franc', 'Syrah', 'Merlot', 'Petit Verdot', 'Bonarda', 'Pinot Noir', 'Tempranillo', 'Garnacha'],
+    'Tintos': ['Malbec', 'Cabernet Sauvignon', 'Cabernet Franc', 'Syrah', 'Merlot', 'Petit Verdot', 'Bonarda', 'Pinot Noir', 'Tempranillo', 'Garnacha', 'Rosé', 'Ancellotta'],
     'Blancos': ['Sauvignon Blanc', 'Torrontés', 'Viognier', 'Chardonnay', 'Blanco Dulce'],
-    'Rosados': ['Rosé'],
     'Espumantes': ['Espumante Brut', 'Extra Brut', 'Brut Rosé'],
-    'Blends': ['Blend'],
-    'Otros': ['Ancellotta'],
   };
   const PREFS = Object.values(PREFS_BY_TYPE).flat();
   const LEVEL_THRESHOLDS = { Bronce: 0, Plata: 1000, Oro: 3000 };
