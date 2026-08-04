@@ -525,6 +525,9 @@
   const conditionsModal = $('#referral-conditions-modal');
   $('#btn-referral-conditions').addEventListener('click', () => {
     conditionsModal.classList.remove('hidden');
+    setTimeout(() => {
+      conditionsModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   });
   $('#close-conditions').addEventListener('click', () => {
     conditionsModal.classList.add('hidden');
