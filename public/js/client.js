@@ -436,32 +436,15 @@
   }
   $('#cart-bar-open').addEventListener('click', openCartModal);
   $('#cart-modal-close').addEventListener('click', () => $('#cart-modal').classList.add('hidden'));
+  $('#cart-bar-close').addEventListener('click', () => $('#cart-bar').classList.add('hidden'));
 
-  $('#cart-confirm-app').addEventListener('click', async () => {
-    const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
-    if (!entries.length) return toast('Todavía no agregaste combos');
-    const payment_method = $('#cart-payment').value;
-    try {
-      for (const [combo_id, quantity] of entries) {
-        await api('/api/create-order', {
-          method: 'POST',
-          body: JSON.stringify({ phone: state.client.phone, combo_id, quantity, payment_method, couponCode: appliedCoupon?.code }),
-        });
-      }
-      if (appliedCoupon) {
-        await api('/api/apply-coupon', {
-          method: 'POST',
-          body: JSON.stringify({ phone: state.client.phone, couponCode: appliedCoupon.code, markAsUsed: true }),
-        });
-      }
-      cart = {};
-      appliedCoupon = null;
-      $('#cart-modal').classList.add('hidden');
-      toast('¡Pedido confirmado! Te contactamos para coordinar.');
-      await loadDashboard(state.client.phone);
-    } catch (err) {
-      toast(err.message);
-    }
+  // Declinar pedido
+  $('#cart-decline').addEventListener('click', () => {
+    cart = {};
+    appliedCoupon = null;
+    $('#cart-modal').classList.add('hidden');
+    $('#cart-bar').classList.add('hidden');
+    toast('Pedido descartado');
   });
 
   $('#cart-send-whatsapp').addEventListener('click', () => {

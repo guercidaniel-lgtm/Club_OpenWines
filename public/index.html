@@ -318,9 +318,10 @@
 </div>
 
 <!-- Barra flotante de carrito -->
-<div id="cart-bar" class="cart-bar hidden">
-  <span id="cart-bar-summary"></span>
-  <button type="button" class="btn btn-gold" id="cart-bar-open">Ver pedido</button>
+<div id="cart-bar" class="cart-bar hidden" style="position:fixed;bottom:20px;right:20px;background:var(--gold);border-radius:12px;padding:14px 18px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;gap:12px;align-items:center;z-index:100;max-width:calc(100% - 40px);">
+  <span id="cart-bar-summary" style="font-weight:600;color:#4a2f00;"></span>
+  <button type="button" class="btn btn-gold" id="cart-bar-open" style="padding:8px 14px;font-size:0.9em;white-space:nowrap;">Ver pedido</button>
+  <button type="button" id="cart-bar-close" style="background:none;border:none;font-size:1.2em;color:#4a2f00;cursor:pointer;padding:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;">✕</button>
 </div>
 
 <!-- Modal carrito -->
@@ -354,9 +355,9 @@
       <option value="Efectivo">Efectivo</option>
       <option value="Tarjeta">Tarjeta</option>
     </select>
-    <div class="row" style="margin-top:10px;">
-      <button type="button" class="btn btn-primary" id="cart-confirm-app">Confirmar en la app</button>
-      <button type="button" class="btn btn-whatsapp" id="cart-send-whatsapp">Enviar por WhatsApp</button>
+    <div class="row" style="margin-top:10px; gap:8px;">
+      <button type="button" class="btn btn-outline" id="cart-decline" style="flex:1;">Declinar</button>
+      <button type="button" class="btn btn-whatsapp" id="cart-send-whatsapp" style="flex:1;">Enviar por WhatsApp</button>
     </div>
   </div>
 </div>
