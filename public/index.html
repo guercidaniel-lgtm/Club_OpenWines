@@ -112,7 +112,7 @@
     <h3>Combos de la semana</h3>
     <div id="combos-grid" class="grid"></div>
     <p class="combo-web-note">
-      Diseñá tu experiencia en nuestra web armá el combo perfecto para cada momento<br>
+      Descubrí tu próximo vino favorito. Armá tu combo ideal en<br>
       <span class="click-emoji" aria-hidden="true">👉</span>
       <a href="https://www.openwines.com.ar" target="_blank" rel="noopener">www.openwines.com.ar</a>
       <br><span style="font-size: 0.9em; color: var(--text-muted); margin-top: 8px; display: block;">🚚 Envío sin cargo en Río Cuarto</span>
@@ -220,7 +220,101 @@
     &nbsp;·&nbsp;
     <a href="https://www.instagram.com/open.wines" target="_blank" rel="noopener">@open.wines</a>
   </p>
+  <div style="margin-top:16px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+    <button type="button" class="btn btn-outline" id="btn-bases-condiciones" style="font-size:0.85em; padding:8px 12px;">📋 Bases y Condiciones</button>
+    <button type="button" class="btn btn-outline" id="btn-faq" style="font-size:0.85em; padding:8px 12px;">❓ Preguntas Frecuentes</button>
+  </div>
 </footer>
+
+<!-- Modal Bases y Condiciones -->
+<div id="bases-condiciones-modal" class="modal hidden" style="z-index: 1000;">
+  <div class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
+    <div class="modal-header">
+      <h2>Bases y Condiciones</h2>
+      <button type="button" class="modal-close" id="close-bases">✕</button>
+    </div>
+    <div class="modal-body" style="font-size:0.9em;">
+      <h3 style="margin-top:16px; margin-bottom:8px; color:var(--violet); font-size:1em;">Acumulación de Puntos</h3>
+      <ul style="margin:8px 0; padding-left:20px;">
+        <li>Sumás 1 Punto Open por cada $1.000 de compra.</li>
+        <li>Los puntos se acreditan automáticamente una vez que el pedido haya sido entregado.</li>
+        <li>El costo del envío no genera puntos.</li>
+        <li>Las compras anuladas o reintegradas no generan puntos.</li>
+      </ul>
+      <h3 style="margin-top:16px; margin-bottom:8px; color:var(--violet); font-size:1em;">Vigencia de los Puntos</h3>
+      <p style="margin:8px 0;">Cada compra que realices renueva automáticamente la vigencia de todos tus puntos por 12 meses. Si durante 12 meses consecutivos no realizás compras:</p>
+      <ul style="margin:8px 0; padding-left:20px;">
+        <li>Se descontará automáticamente el 50% de tus Puntos Open.</li>
+        <li>Tu categoría será recalculada según el saldo de puntos vigente.</li>
+      </ul>
+      <p style="margin:12px 0;">Si transcurren 24 meses consecutivos sin realizar compras:</p>
+      <ul style="margin:8px 0; padding-left:20px;">
+        <li>Los Puntos Open restantes vencerán en su totalidad.</li>
+        <li>El cliente volverá automáticamente a la categoría Bronce.</li>
+      </ul>
+      <h3 style="margin-top:16px; margin-bottom:8px; color:var(--violet); font-size:1em;">Categorías</h3>
+      <ul style="margin:8px 0; padding-left:20px;">
+        <li>La categoría se determina por la cantidad de Puntos Open vigentes.</li>
+        <li>Cada vez que acumules nuevos puntos podrás acceder automáticamente a una categoría superior.</li>
+        <li>Si por vencimiento de puntos el saldo disminuye, la categoría se actualizará automáticamente.</li>
+      </ul>
+      <h3 style="margin-top:16px; margin-bottom:8px; color:var(--violet); font-size:1em;">Beneficios</h3>
+      <ul style="margin:8px 0; padding-left:20px;">
+        <li>Los beneficios estarán vigentes mientras el cliente mantenga la categoría correspondiente.</li>
+        <li>Los beneficios Precio Socio Plata y Precio Socio Oro son acumulables con las promociones vigentes del sitio web.</li>
+        <li>Open Wines podrá excluir promociones, productos, bodegas o acciones comerciales específicas cuando lo comunique expresamente.</li>
+      </ul>
+      <h3 style="margin-top:16px; margin-bottom:8px; color:var(--violet); font-size:1em;">Modificaciones</h3>
+      <p style="margin:8px 0;">Open Wines podrá modificar, ampliar o actualizar el Club Open Wines y sus beneficios cuando lo considere necesario, comunicándolo previamente a sus socios.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-gold" id="confirm-bases" style="width: 100%;">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Preguntas Frecuentes -->
+<div id="faq-modal" class="modal hidden" style="z-index: 1000;">
+  <div class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
+    <div class="modal-header">
+      <h2>Preguntas Frecuentes</h2>
+      <button type="button" class="modal-close" id="close-faq">✕</button>
+    </div>
+    <div class="modal-body" style="font-size:0.9em;">
+      <div style="margin-bottom:16px;">
+        <h4 style="color:var(--violet); margin-bottom:6px;">¿Cómo gano puntos?</h4>
+        <p style="margin:0;">Por cada $1.000 de compra recibís 1 Punto Open.</p>
+      </div>
+      <div style="margin-bottom:16px;">
+        <h4 style="color:var(--violet); margin-bottom:6px;">¿Cuándo se acreditan?</h4>
+        <p style="margin:0;">Cuando tu pedido haya sido entregado.</p>
+      </div>
+      <div style="margin-bottom:16px;">
+        <h4 style="color:var(--violet); margin-bottom:6px;">¿Cómo subo de categoría?</h4>
+        <p style="margin:0;">Simplemente comprando. Cuantos más Puntos Open acumulás, mejores beneficios obtenés.</p>
+      </div>
+      <div style="margin-bottom:16px;">
+        <h4 style="color:var(--violet); margin-bottom:6px;">¿Pierdo mis puntos?</h4>
+        <p style="margin:0; margin-bottom:6px;">Solo si dejás de comprar.</p>
+        <ul style="margin:0; padding-left:20px;">
+          <li>Después de 12 meses sin compras, perdés el 50% de tus puntos.</li>
+          <li>Después de 24 meses sin compras, los puntos restantes vencen.</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:16px;">
+        <h4 style="color:var(--violet); margin-bottom:6px;">¿Puedo perder mi categoría?</h4>
+        <p style="margin:0;">Sí. Si por vencimiento de puntos disminuye tu saldo, tu categoría se actualizará automáticamente.</p>
+      </div>
+      <div>
+        <h4 style="color:var(--violet); margin-bottom:6px;">¿Los beneficios se acumulan con las promociones?</h4>
+        <p style="margin:0;">Sí. Los beneficios Precio Socio Plata y Precio Socio Oro se suman a las promociones vigentes, salvo en acciones comerciales específicas donde Open Wines lo indique expresamente.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-gold" id="confirm-faq" style="width: 100%;">Entendido</button>
+    </div>
+  </div>
+</div>
 
 <!-- Barra flotante de carrito -->
 <div id="cart-bar" class="cart-bar hidden">

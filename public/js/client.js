@@ -523,7 +523,7 @@
 
   // Condiciones referrales modal
   const conditionsModal = $('#referral-conditions-modal');
-  const closeModal = () => {
+  const closeRefModal = () => {
     conditionsModal.classList.add('hidden');
     setTimeout(() => {
       $('#ref-name').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -535,10 +535,44 @@
       conditionsModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
   });
-  $('#close-conditions').addEventListener('click', closeModal);
-  $('#confirm-conditions').addEventListener('click', closeModal);
+  $('#close-conditions').addEventListener('click', closeRefModal);
+  $('#confirm-conditions').addEventListener('click', closeRefModal);
   conditionsModal.addEventListener('click', (e) => {
-    if (e.target === conditionsModal) closeModal();
+    if (e.target === conditionsModal) closeRefModal();
+  });
+
+  // Bases y Condiciones modal
+  const basesModal = $('#bases-condiciones-modal');
+  const closeBasesModal = () => {
+    basesModal.classList.add('hidden');
+  };
+  $('#btn-bases-condiciones').addEventListener('click', () => {
+    basesModal.classList.remove('hidden');
+    setTimeout(() => {
+      basesModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  });
+  $('#close-bases').addEventListener('click', closeBasesModal);
+  $('#confirm-bases').addEventListener('click', closeBasesModal);
+  basesModal.addEventListener('click', (e) => {
+    if (e.target === basesModal) closeBasesModal();
+  });
+
+  // Preguntas Frecuentes modal
+  const faqModal = $('#faq-modal');
+  const closeFaqModal = () => {
+    faqModal.classList.add('hidden');
+  };
+  $('#btn-faq').addEventListener('click', () => {
+    faqModal.classList.remove('hidden');
+    setTimeout(() => {
+      faqModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  });
+  $('#close-faq').addEventListener('click', closeFaqModal);
+  $('#confirm-faq').addEventListener('click', closeFaqModal);
+  faqModal.addEventListener('click', (e) => {
+    if (e.target === faqModal) closeFaqModal();
   });
 
   // ---------- Bodegas ----------
