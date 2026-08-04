@@ -511,7 +511,7 @@
         }),
       });
       const text = encodeURIComponent(
-        `Hola ${friend_name}! Te invito al Club Openwines de nuestra vinoteca. Arrancás con 15% off en tu primera compra. Sumate acá: ${APP_URL} 🍷`
+        `Hola ${friend_name}! Te invito al Club Openwines de nuestra vinoteca. Arrancás con 10% OFF en tu primera compra. Sumate acá: ${APP_URL} 🍷`
       );
       window.open(`https://wa.me/${friend_phone.replace(/\D/g, '')}?text=${text}`, '_blank');
       $('#form-referral').reset();
