@@ -521,12 +521,18 @@
     }
   });
 
-  // Condiciones referrales modal
+  // Condiciones referrals modal
   const conditionsModal = $('#referral-conditions-modal');
   const closeRefModal = () => {
     conditionsModal.classList.add('hidden');
     setTimeout(() => {
-      $('#ref-name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const refInput = $('#ref-name');
+      refInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      refInput.classList.add('highlight');
+      refInput.focus();
+      setTimeout(() => {
+        refInput.classList.remove('highlight');
+      }, 4000);
     }, 100);
   };
   $('#btn-referral-conditions').addEventListener('click', () => {
