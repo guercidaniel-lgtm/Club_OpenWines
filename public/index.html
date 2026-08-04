@@ -132,12 +132,13 @@
       </div>
       <div class="referral-stat">
         <div style="font-size: 0.85em; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">🍷 Vos recibís</div>
-        <img src="https://www.heartsof.wine/cdn/shop/products/TAYMENTE_2019_MALBEC_1024x1024.png?v=1663688099" alt="Taymente Malbec" class="referral-stat-image" onerror="this.style.display='none'">
-        <div class="referral-stat-value wine-name">Taymente</div>
-        <div class="referral-stat-label">Malbec de regalo en tu próxima compra</div>
+        <div style="font-size: 2.5em; margin: 8px 0;">🍾</div>
+        <div class="referral-stat-value wine-name">Taymente<br>Malbec</div>
+        <div class="referral-stat-label">de regalo en tu próxima compra</div>
       </div>
     </div>
     <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 16px; text-align: center;">Porque las mejores recomendaciones siempre merecen un brindis. 🥂</p>
+    <button type="button" class="btn" id="btn-referral-conditions" style="width: 100%; margin-bottom: 16px; background: transparent; border: 1px solid var(--gold); color: var(--gold);">📋 Ver condiciones</button>
     <form id="form-referral">
       <label for="ref-name">Nombre del amigo</label>
       <input id="ref-name" type="text" required>
@@ -145,6 +146,43 @@
       <input id="ref-phone" type="tel" required>
       <button type="submit" class="btn btn-whatsapp">Invitar por WhatsApp</button>
     </form>
+  </div>
+
+  <!-- Modal Condiciones Referrals -->
+  <div id="referral-conditions-modal" class="modal hidden" style="z-index: 1000;">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2>Condiciones</h2>
+        <button type="button" class="modal-close" id="close-conditions">✕</button>
+      </div>
+      <div class="modal-body">
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 12px; display: flex; gap: 8px; align-items: flex-start;">
+            <span style="flex-shrink: 0; color: var(--gold); font-weight: bold;">✔️</span>
+            <span>Compra mínima de $65.000.</span>
+          </li>
+          <li style="margin-bottom: 12px; display: flex; gap: 8px; align-items: flex-start;">
+            <span style="flex-shrink: 0; color: var(--gold); font-weight: bold;">✔️</span>
+            <span>Beneficio válido por 60 días.</span>
+          </li>
+          <li style="margin-bottom: 12px; display: flex; gap: 8px; align-items: flex-start;">
+            <span style="flex-shrink: 0; color: var(--gold); font-weight: bold;">✔️</span>
+            <span>El beneficio del referido aplica únicamente en su primera compra.</span>
+          </li>
+          <li style="margin-bottom: 12px; display: flex; gap: 8px; align-items: flex-start;">
+            <span style="flex-shrink: 0; color: var(--gold); font-weight: bold;">✔️</span>
+            <span>El beneficio para quien recomienda se acredita una vez confirmada la compra del amigo.</span>
+          </li>
+          <li style="display: flex; gap: 8px; align-items: flex-start;">
+            <span style="flex-shrink: 0; color: var(--gold); font-weight: bold;">✔️</span>
+            <span>Podés invitar a tantos amigos como quieras.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gold" id="confirm-conditions" style="width: 100%;">Entendido</button>
+      </div>
+    </div>
   </div>
 
   <!-- Bodegas -->

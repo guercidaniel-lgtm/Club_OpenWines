@@ -521,6 +521,21 @@
     }
   });
 
+  // Condiciones referrales modal
+  const conditionsModal = $('#referral-conditions-modal');
+  $('#btn-referral-conditions').addEventListener('click', () => {
+    conditionsModal.classList.remove('hidden');
+  });
+  $('#close-conditions').addEventListener('click', () => {
+    conditionsModal.classList.add('hidden');
+  });
+  $('#confirm-conditions').addEventListener('click', () => {
+    conditionsModal.classList.add('hidden');
+  });
+  conditionsModal.addEventListener('click', (e) => {
+    if (e.target === conditionsModal) conditionsModal.classList.add('hidden');
+  });
+
   // ---------- Bodegas ----------
   function renderWineries(wineries) {
     const grid = $('#wineries-grid');
