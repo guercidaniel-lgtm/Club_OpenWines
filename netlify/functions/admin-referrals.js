@@ -23,15 +23,8 @@ exports.handler = async (event) => {
         return json(200, { referral, alreadyConfirmed: true });
       }
 
-      const referrerRows = await sb(`clients?phone=eq.${encodeURIComponent(referral.referrer_phone)}&select=*`);
-      if (referrerRows.length) {
-        const referrer = referrerRows[0];
-        await sb(`clients?id=eq.${referrer.id}`, {
-          method: 'PATCH',
-          body: JSON.stringify({ points: referrer.points + 300 }),
-        });
-      }
-
+      // No se acreditan puntos. El beneficio es una botella Taymente Malbec
+      // que se entrega en la próxima compra del que recomendó.
       const updated = await sb(`referrals?id=eq.${referral.id}`, {
         method: 'PATCH',
         body: JSON.stringify({ status: 'Confirmado' }),

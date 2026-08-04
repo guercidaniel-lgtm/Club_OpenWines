@@ -440,7 +440,7 @@
         btn.addEventListener('click', async () => {
           try {
             await api('/api/admin-referrals', { method: 'POST', body: JSON.stringify({ referral_id: btn.dataset.id }) });
-            toast('Referido confirmado, +300 puntos acreditados');
+            toast('Referido confirmado. Una botella Taymente Malbec acreditada para su próxima compra');
             loadReferrals();
           } catch (err) { toast(err.message); }
         });
