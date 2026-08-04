@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saliendo del Club Openwines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="franja">
+  <span class="wordmark">open<span>wines</span></span>
+  <h3 style="color:var(--white)" id="out-title">Estás por salir del Club</h3>
+  <p id="out-text">Cortesía de Club Openwines.</p>
+  <div class="row" style="justify-content:center">
+    <a href="#" id="out-continue" class="btn btn-gold" target="_blank" rel="noopener">Continuar</a>
+    <a href="/" class="btn btn-outline" style="color:var(--white);border-color:var(--white)">Volver al club</a>
+  </div>
+</div>
+<script>
+  const params = new URLSearchParams(location.search);
+  const url = params.get('url');
+  const name = params.get('name') || 'esta bodega';
+  document.getElementById('out-title').textContent = `Estás viendo ${name}`;
+  document.getElementById('out-text').textContent = `Cortesía de Club Openwines · se abre en una pestaña nueva.`;
+  const link = document.getElementById('out-continue');
+  if (url) {
+    link.href = url;
+    link.textContent = `Ir al sitio de ${name}`;
+  } else {
+    link.classList.add('hidden');
+  }
+</script>
+</body>
+</html>

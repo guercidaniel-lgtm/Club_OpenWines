@@ -11,14 +11,42 @@
   const PREFS = Object.values(PREFS_BY_TYPE).flat();
   const LEVEL_THRESHOLDS = { Bronce: 0, Plata: 1000, Oro: 3000 };
   const BENEFITS = {
-    Bronce: '5% off en tu próxima compra.',
-    Plata: '10% off permanente + envío gratis desde 6 botellas + ves los combos 24hs antes.',
-    Oro: '15% off permanente + primera opción en partidas boutique + ves los combos 48hs antes + evento anual + regalo de cumpleaños.',
+    Bronce: '5% OFF en tu segunda compra + acumulación de puntos.',
+    Plata: '5% beneficio adicional en todas tus compras + 5% descuento en eventos + doble puntos en cumpleaños.',
+    Oro: '7% beneficio adicional en todas tus compras + 10% descuento en eventos + envío gratis desde $95.000 + regalo de cumpleaños.',
   };
   const LEVEL_INFO = [
-    { key: 'Bronce', range: '0 – 999 puntos', benefits: ['5% off en tu próxima compra'] },
-    { key: 'Plata', range: '1.000 – 2.999 puntos', benefits: ['10% off permanente', 'Envío gratis desde 6 botellas', 'Ves los combos de la semana 24hs antes'] },
-    { key: 'Oro', range: '3.000+ puntos', benefits: ['15% off permanente', 'Primera opción en partidas boutique', 'Ves los combos de la semana 48hs antes', 'Evento anual exclusivo', 'Regalo de cumpleaños'] },
+    {
+      key: 'Bronce',
+      range: '0 – 999 Puntos Open',
+      benefits: [
+        '🎁 5% OFF en tu segunda compra',
+        '🍷 Acumulación de Puntos Open en todas tus compras',
+        '📩 Acceso a promociones y novedades exclusivas'
+      ]
+    },
+    {
+      key: 'Plata',
+      range: '1.000 – 2.999 Puntos Open',
+      benefits: [
+        '🏷️ 5% de beneficio adicional sobre el precio vigente',
+        '🎯 5% descuento en eventos organizados por Open Wines',
+        '⏰ Acceso anticipado a promociones y lanzamientos',
+        '🎂 Doble acumulación de puntos en tu mes de cumpleaños'
+      ]
+    },
+    {
+      key: 'Oro',
+      range: '3.000+ Puntos Open',
+      benefits: [
+        '🏷️ 7% de beneficio adicional sobre el precio vigente',
+        '🎯 10% descuento en eventos organizados por Open Wines',
+        '🚚 Envío gratuito desde compras de $95.000 (Córdoba)',
+        '⭐ Acceso prioritario a lanzamientos y partidas limitadas',
+        '🎁 Regalo especial de cumpleaños',
+        '🎂 Doble acumulación de puntos en tu mes de cumpleaños'
+      ]
+    }
   ];
 
   let state = null; // último payload de /api/client-data
@@ -468,25 +496,6 @@
     window.open(`https://wa.me/${state.business.whatsapp}?text=${text}`, '_blank');
   });
 
-  // ---------- Cupones ----------
-  $('#btn-apply-coupon').addEventListener('click', async () => {
-    const code = $('#cart-coupon').value.trim().toUpperCase();
-    const status = $('#coupon-status');
-    if (!code) return status.textContent = '❌ Ingresá un código';
-    try {
-      const data = await api('/api/apply-coupon', {
-        method: 'POST',
-        body: JSON.stringify({ phone: state.client.phone, couponCode: code }),
-      });
-      appliedCoupon = { code, discount: data.discountAmount };
-      status.textContent = `✅ ${data.message}`;
-      $('#cart-coupon').disabled = true;
-      $('#btn-apply-coupon').disabled = true;
-      renderCartItems();
-    } catch (err) {
-      status.textContent = `❌ ${err.message}`;
-    }
-  });
 
   // ---------- Referidos ----------
   $('#form-referral').addEventListener('submit', async (e) => {
