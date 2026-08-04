@@ -523,20 +523,22 @@
 
   // Condiciones referrales modal
   const conditionsModal = $('#referral-conditions-modal');
+  const closeModal = () => {
+    conditionsModal.classList.add('hidden');
+    setTimeout(() => {
+      $('#ref-name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  };
   $('#btn-referral-conditions').addEventListener('click', () => {
     conditionsModal.classList.remove('hidden');
     setTimeout(() => {
       conditionsModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
   });
-  $('#close-conditions').addEventListener('click', () => {
-    conditionsModal.classList.add('hidden');
-  });
-  $('#confirm-conditions').addEventListener('click', () => {
-    conditionsModal.classList.add('hidden');
-  });
+  $('#close-conditions').addEventListener('click', closeModal);
+  $('#confirm-conditions').addEventListener('click', closeModal);
   conditionsModal.addEventListener('click', (e) => {
-    if (e.target === conditionsModal) conditionsModal.classList.add('hidden');
+    if (e.target === conditionsModal) closeModal();
   });
 
   // ---------- Bodegas ----------
