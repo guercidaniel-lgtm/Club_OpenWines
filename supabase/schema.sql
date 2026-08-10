@@ -25,6 +25,7 @@ alter table clients add column if not exists scratch_card_claimed boolean not nu
 alter table clients add column if not exists points_vigent integer not null default 0;
 alter table clients add column if not exists last_purchase_at timestamptz;
 alter table clients add column if not exists welcome_discount_used boolean not null default false;
+alter table clients add column if not exists email text;
 
 create table if not exists purchases (
   id uuid primary key default gen_random_uuid(),

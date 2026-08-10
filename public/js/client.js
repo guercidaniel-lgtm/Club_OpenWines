@@ -77,9 +77,10 @@
     e.preventDefault();
     const phone = $('#login-phone').value.trim();
     const name = $('#login-name').value.trim();
+    const email = $('#login-email').value.trim();
     $('#login-error').classList.add('hidden');
     try {
-      const data = await api('/api/client-login', { method: 'POST', body: JSON.stringify({ phone, name }) });
+      const data = await api('/api/client-login', { method: 'POST', body: JSON.stringify({ phone, name, email }) });
       if (data.needsName) {
         $('#name-field').classList.remove('hidden');
         $('#login-name').focus();

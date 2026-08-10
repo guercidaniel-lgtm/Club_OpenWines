@@ -7,7 +7,7 @@ const { json } = require('./_http');
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
   try {
-    const { phone, name } = JSON.parse(event.body || '{}');
+    const { phone, name, email } = JSON.parse(event.body || '{}');
     if (!phone || !phone.trim()) return json(400, { error: 'Teléfono requerido' });
     const cleanPhone = phone.trim();
 
@@ -34,6 +34,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         phone: cleanPhone,
         name: name.trim(),
+        email: email && email.trim() ? email.trim() : null,
         origin: referral ? 'referido' : 'organico',
         origin_detail: referral ? (referral.referrer_name || referral.referrer_phone) : null,
       }),
