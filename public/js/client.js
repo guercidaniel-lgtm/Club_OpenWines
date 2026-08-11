@@ -468,14 +468,16 @@
       for (const [combo_id, quantity] of entries) {
         const orderData = {
           phone: state.client.phone,
-          combo_id,
-          quantity,
-          payment_method: $('#cart-payment').value,
+          combo_id: combo_id.trim(),
+          quantity: parseInt(quantity, 10),
+          payment_method: $('#cart-payment').value || null,
         };
-        await api('/api/create-order', {
+        console.log('Creating order:', orderData);
+        const result = await api('/api/create-order', {
           method: 'POST',
           body: JSON.stringify(orderData),
         });
+        console.log('Order created:', result);
       }
 
       // Calcular totales para el mensaje
@@ -509,7 +511,8 @@
       $('#cart-bar').classList.add('hidden');
       toast('✅ Gracias por elegirnos. Te contactaremos vía WhatsApp para la entrega');
     } catch (err) {
-      toast(`Error al crear pedido: ${err.message}`);
+      console.error('Error creating order:', err);
+      toast(`Error: ${err.message || 'No se pudo crear el pedido'}`);
     }
   });
 
