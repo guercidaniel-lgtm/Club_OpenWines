@@ -43,8 +43,11 @@
   function fmtDateTime(d) {
     if (!d) return '—';
     const date = new Date(d);
+    if (isNaN(date.getTime())) return '—';
     const dateStr = date.toLocaleDateString('es-AR');
-    const timeStr = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    const hh = String(date.getHours()).padStart(2, '0');
+    const mm = String(date.getMinutes()).padStart(2, '0');
+    const timeStr = `${hh}:${mm}`;
     return `${dateStr} ${timeStr}`;
   }
   function fmtBirthday(d) {
