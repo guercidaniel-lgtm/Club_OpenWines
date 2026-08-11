@@ -80,6 +80,15 @@
     const birthday = $('#login-birthday').value;
     const email = $('#login-email').value.trim();
     $('#login-error').classList.add('hidden');
+
+    // Si el name-field está visible, validar que el nombre sea completado
+    if (!$('#name-field').classList.contains('hidden') && !name) {
+      $('#login-error').textContent = 'Completá tu nombre';
+      $('#login-error').classList.remove('hidden');
+      $('#login-name').focus();
+      return;
+    }
+
     try {
       const data = await api('/api/client-login', { method: 'POST', body: JSON.stringify({ phone, name, birthday, email }) });
       if (data.needsName) {
