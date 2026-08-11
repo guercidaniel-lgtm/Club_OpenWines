@@ -26,21 +26,17 @@ exports.handler = async (event) => {
       body: JSON.stringify({ status: 'Confirmado' }),
     });
 
-    // Acreditar puntos
-    const clients = await sb(`clients?id=eq.${order.client_id}&select=id,points,points_vigent`);
+    // Acreditar puntos (solo points por ahora)
+    const clients = await sb(`clients?id=eq.${order.client_id}&select=id,points`);
     if (clients && clients.length) {
       const client = clients[0];
       const currentPoints = Number(client.points) || 0;
-      const currentPointsVigent = Number(client.points_vigent) || 0;
-
-      const updateData = {
-        points: currentPoints + pointsToAward,
-        points_vigent: currentPointsVigent + pointsToAward,
-      };
 
       await sb(`clients?id=eq.${client.id}`, {
         method: 'PATCH',
-        body: JSON.stringify(updateData),
+        body: JSON.stringify({
+          points: currentPoints + pointsToAward,
+        }),
       });
     }
 
