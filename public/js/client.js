@@ -504,22 +504,9 @@
       const text = encodeURIComponent(message);
       const phone = state.business.whatsapp;
 
-      // Detectar dispositivo y abrir WhatsApp sin diálogo
-      const isAndroid = /Android/.test(navigator.userAgent);
-      const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-
-      let whatsappUrl;
-      if (isAndroid) {
-        // Android: usar intent:// para WhatsApp Business (sin diálogo)
-        whatsappUrl = `intent://send?phone=${phone}&text=${text}#Intent;package=com.whatsapp.w4b;scheme=https;action=android.intent.action.VIEW;end`;
-      } else if (isIOS) {
-        // iOS: usar telprompt para WhatsApp (abre la app instalada)
-        whatsappUrl = `https://wa.me/${phone}?text=${text}`;
-      } else {
-        // Web/Desktop: usar wa.me
-        whatsappUrl = `https://wa.me/${phone}?text=${text}`;
-      }
-
+      // Usar https://wa.me/ que abre la app nativa instalada
+      // Si el usuario tiene múltiples apps, el sistema le pedirá elegir una vez
+      const whatsappUrl = `https://wa.me/${phone}?text=${text}`;
       window.open(whatsappUrl, '_blank');
 
       // Limpiar carrito y cerrar modal después de enviar
