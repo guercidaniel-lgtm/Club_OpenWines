@@ -409,14 +409,26 @@
           <td>${escapeHtml(o.clients?.phone || '')}</td>
           <td>${escapeHtml(o.combos?.name || '')}</td>
           <td>${o.quantity}</td>
-          <td>${fmtMoney(o.subtotal || 0)}</td>
-          <td>${o.referral_discount > 0 ? fmtMoney(o.referral_discount) : '-'}</td>
-          <td>${o.coupon_discount > 0 ? fmtMoney(o.coupon_discount) : '-'}</td>
           <td>${fmtMoney(o.total)}</td>
-          <td>${escapeHtml(o.coupon_code ? o.coupon_code.substring(0, 8) + '...' : '-')}</td>
           <td>${escapeHtml(o.status || 'Pendiente')}</td>
           <td>${fmtDate(o.created_at)}</td>
+          <td style="display:flex;gap:6px;">
+            ${o.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm-order" data-id="${o.id}" style="flex:1;padding:6px 12px;font-size:0.85em;">Confirmar</button>` : `<span class="muted" style="font-size:0.85em;">✓ ${o.status}</span>`}
+          </td>
         </tr>`).join('');
+
+      // Agregar event listeners a botones de confirmar
+      document.querySelectorAll('.btn-confirm-order').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          try {
+            await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
+            toast('✅ Compra confirmada y puntos acreditados');
+            loadOrders();
+          } catch (err) {
+            toast(`Error: ${err.message}`);
+          }
+        });
+      });
     } catch (err) { toast(err.message); }
   }
 
