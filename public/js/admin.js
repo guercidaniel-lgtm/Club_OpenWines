@@ -417,6 +417,7 @@
           </td>
           <td style="display:flex;gap:6px;">
             ${o.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm-order" data-id="${o.id}" style="flex:1;padding:6px 12px;font-size:0.85em;">Confirmar</button>` : `<span class="muted" style="font-size:0.85em;">✓ ${o.status}</span>`}
+            <button class="btn btn-outline btn-delete-order" data-id="${o.id}" style="padding:6px 12px;font-size:0.85em;color:#d61d4d;border-color:#d61d4d;">✕</button>
           </td>
         </tr>`).join('');
 
@@ -426,6 +427,20 @@
           try {
             await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
             toast('✅ Compra confirmada y puntos acreditados');
+            loadOrders();
+          } catch (err) {
+            toast(`Error: ${err.message}`);
+          }
+        });
+      });
+
+      // Agregar event listeners a botones de eliminar
+      document.querySelectorAll('.btn-delete-order').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('¿Eliminar este pedido?')) return;
+          try {
+            await api('/api/delete-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
+            toast('✅ Pedido eliminado');
             loadOrders();
           } catch (err) {
             toast(`Error: ${err.message}`);

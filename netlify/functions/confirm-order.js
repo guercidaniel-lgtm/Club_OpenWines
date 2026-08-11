@@ -26,10 +26,7 @@ exports.handler = async (event) => {
     // Actualizar pedido a "Confirmado"
     const updatedOrder = await sb(`orders?id=eq.${order_id}`, {
       method: 'PATCH',
-      body: JSON.stringify({
-        status: 'Confirmado',
-        delivered_at: new Date().toISOString(),
-      }),
+      body: JSON.stringify({ status: 'Confirmado' }),
     });
 
     // Acreditar puntos al cliente
