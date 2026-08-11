@@ -421,32 +421,40 @@
           </td>
         </tr>`).join('');
 
-      // Agregar event listeners a botones de confirmar
-      document.querySelectorAll('.btn-confirm-order').forEach((btn) => {
-        btn.addEventListener('click', async () => {
-          try {
-            await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
-            toast('✅ Compra confirmada y puntos acreditados');
-            loadOrders();
-          } catch (err) {
-            toast(`Error: ${err.message}`);
-          }
+      // Agregar event listeners a botones de eliminar (primero, para asegurar que funcione)
+      try {
+        document.querySelectorAll('.btn-delete-order').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('¿Eliminar este pedido?')) return;
+            try {
+              await api('/api/delete-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
+              toast('✅ Pedido eliminado');
+              loadOrders();
+            } catch (err) {
+              toast(`Error: ${err.message}`);
+            }
+          });
         });
-      });
+      } catch (e) {
+        console.error('Error adding delete listeners:', e);
+      }
 
-      // Agregar event listeners a botones de eliminar
-      document.querySelectorAll('.btn-delete-order').forEach((btn) => {
-        btn.addEventListener('click', async () => {
-          if (!confirm('¿Eliminar este pedido?')) return;
-          try {
-            await api('/api/delete-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
-            toast('✅ Pedido eliminado');
-            loadOrders();
-          } catch (err) {
-            toast(`Error: ${err.message}`);
-          }
+      // Agregar event listeners a botones de confirmar
+      try {
+        document.querySelectorAll('.btn-confirm-order').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            try {
+              await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
+              toast('✅ Compra confirmada y puntos acreditados');
+              loadOrders();
+            } catch (err) {
+              toast(`Error: ${err.message}`);
+            }
+          });
         });
-      });
+      } catch (e) {
+        console.error('Error adding confirm listeners:', e);
+      }
     } catch (err) { toast(err.message); }
   }
 
