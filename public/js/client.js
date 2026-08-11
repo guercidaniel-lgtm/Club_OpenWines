@@ -514,6 +514,8 @@
       appliedCoupon = null;
       $('#cart-modal').classList.add('hidden');
       $('#cart-bar').classList.add('hidden');
+      renderCartBar();
+      renderCartItems();
       toast('✅ Gracias por elegirnos. Te contactaremos vía WhatsApp para la entrega');
     } catch (err) {
       console.error('Error creating order:', err);

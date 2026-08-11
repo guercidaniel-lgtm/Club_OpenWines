@@ -403,7 +403,12 @@
   async function loadOrders() {
     try {
       const { orders } = await api('/api/admin-orders');
-      $('#table-orders tbody').innerHTML = orders.map((o) => `
+      $('#table-orders tbody').innerHTML = orders.map((o) => {
+        const orderId = o.id.substring(0, 8).toUpperCase();
+        const createdTime = o.created_at ? new Date(o.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) : '—';
+        const confirmedTime = o.delivered_at ? new Date(o.delivered_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) : '—';
+
+        return `
         <tr>
           <td>${escapeHtml(o.clients?.name || '')}</td>
           <td>${escapeHtml(o.clients?.phone || '')}</td>
@@ -412,14 +417,16 @@
           <td>${fmtMoney(o.total)}</td>
           <td>${escapeHtml(o.status || 'Pendiente')}</td>
           <td style="font-size:0.85em;color:#666;">
-            📅 ${fmtDate(o.created_at)}<br>
-            ${o.delivered_at ? `✓ ${fmtDate(o.delivered_at)}` : '—'}
+            <strong>#${orderId}</strong><br>
+            📅 ${fmtDate(o.created_at)} ${createdTime}<br>
+            ${o.delivered_at ? `✓ ${fmtDate(o.delivered_at)} ${confirmedTime}` : '—'}
           </td>
           <td style="display:flex;gap:6px;">
             ${o.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm-order" data-id="${o.id}" style="flex:1;padding:6px 12px;font-size:0.85em;">Confirmar</button>` : `<span class="muted" style="font-size:0.85em;">✓ ${o.status}</span>`}
             <button class="btn btn-outline btn-delete-order" data-id="${o.id}" style="padding:6px 12px;font-size:0.85em;color:#d61d4d;border-color:#d61d4d;">✕</button>
           </td>
-        </tr>`).join('');
+        </tr>`;
+      }).join('');
 
       // Agregar event listeners a botones de eliminar (primero, para asegurar que funcione)
       try {
