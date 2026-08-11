@@ -90,25 +90,31 @@
 
   <!-- Completar perfil -->
   <div id="profile-card" class="card hidden" style="border:2px solid var(--gold); background:linear-gradient(135deg, #fff, var(--cream));">
-    <div style="display:flex;align-items:start;justify-content:space-between;gap:16px;">
-      <div style="flex:1">
+    <div style="display:flex;align-items:start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
         <h3 style="margin-bottom:6px;">Completá tu perfil</h3>
-        <p class="muted">Contanos tu cumpleaños y qué varietales preferís.</p>
+        <p class="muted">Elegí qué varietales preferís y sumá puntos al instante.</p>
         <form id="form-profile">
-          <label for="profile-birthday">Fecha de nacimiento</label>
-          <input id="profile-birthday" type="date" required>
           <label>Preferencias de varietal</label>
           <div class="row" id="prefs-options"></div>
           <br>
-          <button type="submit" class="btn btn-gold">Completar perfil</button>
+          <button type="submit" class="btn btn-gold">Guardar preferencias</button>
         </form>
       </div>
-      <div style="text-align:center;padding:20px;background:rgba(233,184,98,0.15);border-radius:12px;flex:0 0 auto;min-width:120px;">
-        <div style="font-size:2.2rem;font-weight:700;color:var(--gold);">+150</div>
-        <div style="font-size:0.85rem;color:var(--gray);font-weight:600;">Puntos de regalo</div>
+      <div style="text-align:center;padding:24px;background:linear-gradient(135deg, rgba(233,184,98,0.25), rgba(233,184,98,0.1));border-radius:16px;flex:0 1 auto;min-width:140px;border:2px dashed var(--gold);position:relative;">
+        <div style="font-size:2.8rem;margin-bottom:6px;animation:bounce 2s infinite;">⭐</div>
+        <div style="font-size:2.4rem;font-weight:700;color:var(--gold);line-height:1;">+150</div>
+        <div style="font-size:0.8rem;color:var(--gray);font-weight:600;margin-top:8px;">Puntos</div>
+        <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;">de regalo</div>
       </div>
     </div>
   </div>
+  <style>
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
 
   <!-- Preferencias de Vino -->
   <div id="prefs-card" class="card hidden">

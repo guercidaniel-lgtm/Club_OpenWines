@@ -281,13 +281,12 @@
 
   $('#form-profile').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const birthday = $('#profile-birthday').value;
     const prefs = Array.from(document.querySelectorAll('#prefs-options input:checked')).map((i) => i.value);
     if (!prefs.length) return toast('Elegí al menos una preferencia');
     try {
       const data = await api('/api/complete-profile', {
         method: 'POST',
-        body: JSON.stringify({ phone: state.client.phone, birthday, prefs }),
+        body: JSON.stringify({ phone: state.client.phone, prefs }),
       });
       if (data.bonusApplied) toast('¡Sumaste 150 puntos!');
       await loadDashboard(state.client.phone);
