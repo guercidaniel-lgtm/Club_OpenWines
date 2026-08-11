@@ -30,15 +30,17 @@ exports.handler = async (event) => {
     const clients = await sb(`clients?id=eq.${order.client_id}&select=id,points,points_vigent`);
     if (clients && clients.length) {
       const client = clients[0];
-      const pts = parseInt(client.points || 0);
-      const ptsVig = parseInt(client.points_vigent || 0);
+      const currentPoints = Number(client.points) || 0;
+      const currentPointsVigent = Number(client.points_vigent) || 0;
+
+      const updateData = {
+        points: currentPoints + pointsToAward,
+        points_vigent: currentPointsVigent + pointsToAward,
+      };
 
       await sb(`clients?id=eq.${client.id}`, {
         method: 'PATCH',
-        body: JSON.stringify({
-          points: pts + pointsToAward,
-          points_vigent: ptsVig + pointsToAward,
-        }),
+        body: JSON.stringify(updateData),
       });
     }
 

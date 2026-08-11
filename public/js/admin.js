@@ -444,12 +444,13 @@
         document.querySelectorAll('.btn-confirm-order').forEach((btn) => {
           btn.addEventListener('click', async () => {
             try {
-              await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
+              const result = await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
+              console.log('Confirm result:', result);
               toast('✅ Compra confirmada y puntos acreditados');
               loadOrders();
-              // También actualizar tabla de clientes para ver puntos refrescados
-              setTimeout(() => loadClients(), 500);
+              loadClients();
             } catch (err) {
+              console.error('Confirm error:', err);
               toast(`Error: ${err.message}`);
             }
           });
