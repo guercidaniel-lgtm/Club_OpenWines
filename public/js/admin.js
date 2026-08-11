@@ -447,6 +447,8 @@
               await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
               toast('✅ Compra confirmada y puntos acreditados');
               loadOrders();
+              // También actualizar tabla de clientes para ver puntos refrescados
+              setTimeout(() => loadClients(), 500);
             } catch (err) {
               toast(`Error: ${err.message}`);
             }
