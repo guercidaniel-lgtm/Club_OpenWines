@@ -457,41 +457,59 @@
     toast('Pedido descartado');
   });
 
-  $('#cart-send-whatsapp').addEventListener('click', () => {
+  $('#cart-send-whatsapp').addEventListener('click', async () => {
     if (!state.business.whatsapp) return toast('WhatsApp no configurado todavía');
     const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
     if (!entries.length) return toast('Todavía no agregaste combos');
 
-    // Calcular totales
-    const raw = Object.entries(cart).reduce((sum, [id, qty]) => {
-      const combo = state.combos.find((c) => c.id === id);
-      return combo ? sum + combo.price * qty : sum;
-    }, 0);
+    try {
+      // Crear cada order en la BD
+      for (const [combo_id, quantity] of entries) {
+        await api('/api/create-order', {
+          method: 'POST',
+          body: JSON.stringify({
+            phone: state.client.phone,
+            combo_id,
+            quantity,
+            payment_method: $('#cart-payment').value,
+            couponCode: appliedCoupon?.code || null,
+          }),
+        });
+      }
 
-    const referralDiscount = state.discountPercent ? Math.round(raw * (state.discountPercent / 100)) : 0;
-    const couponDiscount = appliedCoupon?.discount || 0;
-    const total = cartTotal();
+      // Calcular totales para el mensaje
+      const raw = Object.entries(cart).reduce((sum, [id, qty]) => {
+        const combo = state.combos.find((c) => c.id === id);
+        return combo ? sum + combo.price * qty : sum;
+      }, 0);
 
-    const lines = entries.map(([id, qty]) => {
-      const combo = state.combos.find((c) => c.id === id);
-      return `• ${combo.name} x${qty} — $${(combo.price * qty).toLocaleString('es-AR')}`;
-    });
+      const referralDiscount = state.discountPercent ? Math.round(raw * (state.discountPercent / 100)) : 0;
+      const couponDiscount = appliedCoupon?.discount || 0;
+      const total = cartTotal();
 
-    let message = `Hola! Soy ${state.client.name}, quiero hacer este pedido:\n${lines.join('\n')}\n`;
-    message += `\n*Subtotal:* $${raw.toLocaleString('es-AR')}`;
-    if (referralDiscount > 0) message += `\n*Descuento cliente referido (15%):* -$${referralDiscount.toLocaleString('es-AR')}`;
-    if (couponDiscount > 0) message += `\n*Código de descuento:* -$${couponDiscount.toLocaleString('es-AR')}`;
-    message += `\n\n*Total: $${total.toLocaleString('es-AR')}*`;
+      const lines = entries.map(([id, qty]) => {
+        const combo = state.combos.find((c) => c.id === id);
+        return `• ${combo.name} x${qty} — $${(combo.price * qty).toLocaleString('es-AR')}`;
+      });
 
-    const text = encodeURIComponent(message);
-    window.open(`https://wa.me/${state.business.whatsapp}?text=${text}`, '_blank');
+      let message = `Hola! Soy ${state.client.name}, quiero hacer este pedido:\n${lines.join('\n')}\n`;
+      message += `\n*Subtotal:* $${raw.toLocaleString('es-AR')}`;
+      if (referralDiscount > 0) message += `\n*Descuento cliente referido (15%):* -$${referralDiscount.toLocaleString('es-AR')}`;
+      if (couponDiscount > 0) message += `\n*Código de descuento:* -$${couponDiscount.toLocaleString('es-AR')}`;
+      message += `\n\n*Total: $${total.toLocaleString('es-AR')}*`;
 
-    // Limpiar carrito y cerrar modal después de enviar
-    cart = {};
-    appliedCoupon = null;
-    $('#cart-modal').classList.add('hidden');
-    $('#cart-bar').classList.add('hidden');
-    toast('✅ Gracias por elegirnos. Te contactaremos vía WhatsApp para la entrega');
+      const text = encodeURIComponent(message);
+      window.open(`https://wa.me/${state.business.whatsapp}?text=${text}`, '_blank');
+
+      // Limpiar carrito y cerrar modal después de enviar
+      cart = {};
+      appliedCoupon = null;
+      $('#cart-modal').classList.add('hidden');
+      $('#cart-bar').classList.add('hidden');
+      toast('✅ Gracias por elegirnos. Te contactaremos vía WhatsApp para la entrega');
+    } catch (err) {
+      toast(`Error al crear pedido: ${err.message}`);
+    }
   });
 
 
