@@ -23,7 +23,7 @@
 
 <header class="site-header">
   <a href="/"><img src="/assets/logo-white.png" alt="Club Openwines" class="header-logo"></a>
-  <span class="header-claim">Abre tu mente</span>
+  <span class="header-claim">Club OPENWINES</span>
   <div class="header-actions">
     <button id="btn-logout" class="hidden">Salir</button>
   </div>
@@ -38,8 +38,10 @@
       <label for="login-phone">Teléfono</label>
       <input id="login-phone" type="tel" placeholder="Ej: 3511234567" required>
       <div id="name-field" class="hidden">
-        <label for="login-name">¿Primera vez? Contanos tu nombre</label>
-        <input id="login-name" type="text" placeholder="Nombre y apellido">
+        <label for="login-name">¿Primera vez? Completá tu perfil</label>
+        <input id="login-name" type="text" placeholder="Nombre y apellido" required>
+        <label for="login-birthday">Fecha de nacimiento</label>
+        <input id="login-birthday" type="date" required>
         <label for="login-email">Correo electrónico (opcional)</label>
         <input id="login-email" type="email" placeholder="tu@email.com">
       </div>
@@ -87,17 +89,25 @@
   </div>
 
   <!-- Completar perfil -->
-  <div id="profile-card" class="card hidden">
-    <h3>Completá tu perfil y sumá 150 puntos</h3>
-    <p class="muted">Contanos tu cumpleaños y qué varietales preferís.</p>
-    <form id="form-profile">
-      <label for="profile-birthday">Fecha de nacimiento</label>
-      <input id="profile-birthday" type="date" required>
-      <label>Preferencias de varietal</label>
-      <div class="row" id="prefs-options"></div>
-      <br>
-      <button type="submit" class="btn btn-gold">Sumar 150 puntos</button>
-    </form>
+  <div id="profile-card" class="card hidden" style="border:2px solid var(--gold); background:linear-gradient(135deg, #fff, var(--cream));">
+    <div style="display:flex;align-items:start;justify-content:space-between;gap:16px;">
+      <div style="flex:1">
+        <h3 style="margin-bottom:6px;">Completá tu perfil</h3>
+        <p class="muted">Contanos tu cumpleaños y qué varietales preferís.</p>
+        <form id="form-profile">
+          <label for="profile-birthday">Fecha de nacimiento</label>
+          <input id="profile-birthday" type="date" required>
+          <label>Preferencias de varietal</label>
+          <div class="row" id="prefs-options"></div>
+          <br>
+          <button type="submit" class="btn btn-gold">Completar perfil</button>
+        </form>
+      </div>
+      <div style="text-align:center;padding:20px;background:rgba(233,184,98,0.15);border-radius:12px;flex:0 0 auto;min-width:120px;">
+        <div style="font-size:2.2rem;font-weight:700;color:var(--gold);">+150</div>
+        <div style="font-size:0.85rem;color:var(--gray);font-weight:600;">Puntos de regalo</div>
+      </div>
+    </div>
   </div>
 
   <!-- Preferencias de Vino -->
@@ -330,7 +340,7 @@
 <div id="cart-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;">
   <div class="card" style="max-width:420px;width:100%;max-height:85vh;overflow-y:auto;">
     <div class="flex-between">
-      <h3 style="margin:0;">Tu pedido</h3>
+      <h3 style="margin:0;">🛒 Tu pedido</h3>
       <button type="button" class="btn btn-outline" id="cart-modal-close">Cerrar</button>
     </div>
     <div id="cart-items" style="margin:14px 0;"></div>

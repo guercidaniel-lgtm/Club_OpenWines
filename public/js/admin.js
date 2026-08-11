@@ -414,7 +414,7 @@
           <td>${o.coupon_discount > 0 ? fmtMoney(o.coupon_discount) : '-'}</td>
           <td>${fmtMoney(o.total)}</td>
           <td>${escapeHtml(o.coupon_code ? o.coupon_code.substring(0, 8) + '...' : '-')}</td>
-          <td>${escapeHtml(o.payment_method || '')}</td>
+          <td>${escapeHtml(o.status || 'Pendiente')}</td>
           <td>${fmtDate(o.created_at)}</td>
         </tr>`).join('');
     } catch (err) { toast(err.message); }

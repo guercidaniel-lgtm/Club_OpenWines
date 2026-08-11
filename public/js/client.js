@@ -77,10 +77,11 @@
     e.preventDefault();
     const phone = $('#login-phone').value.trim();
     const name = $('#login-name').value.trim();
+    const birthday = $('#login-birthday').value;
     const email = $('#login-email').value.trim();
     $('#login-error').classList.add('hidden');
     try {
-      const data = await api('/api/client-login', { method: 'POST', body: JSON.stringify({ phone, name, email }) });
+      const data = await api('/api/client-login', { method: 'POST', body: JSON.stringify({ phone, name, birthday, email }) });
       if (data.needsName) {
         $('#name-field').classList.remove('hidden');
         $('#login-name').focus();
@@ -482,7 +483,7 @@
     appliedCoupon = null;
     $('#cart-modal').classList.add('hidden');
     $('#cart-bar').classList.add('hidden');
-    toast('¡Pedido enviado por WhatsApp!');
+    toast('✅ Gracias por elegirnos. Te contactaremos vía WhatsApp para la entrega');
   });
 
 
