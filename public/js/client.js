@@ -502,7 +502,8 @@
       message += `\n\n*Total: $${total.toLocaleString('es-AR')}*`;
 
       const text = encodeURIComponent(message);
-      window.open(`https://wa.me/${state.business.whatsapp}?text=${text}`, '_blank');
+      // Usar deeplink directo para evitar diálogo de selección de app
+      window.open(`whatsapp://send?phone=${state.business.whatsapp}&text=${text}`, '_blank');
 
       // Limpiar carrito y cerrar modal después de enviar
       cart = {};
