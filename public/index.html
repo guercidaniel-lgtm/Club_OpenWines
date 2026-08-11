@@ -90,29 +90,30 @@
 
   <!-- Completar perfil -->
   <div id="profile-card" class="card hidden" style="border:2px solid var(--gold); background:linear-gradient(135deg, #fff, var(--cream));">
-    <div style="display:flex;align-items:start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:200px;">
-        <h3 style="margin-bottom:6px;">Completá tu perfil</h3>
-        <p class="muted">Elegí qué varietales preferís y sumá puntos al instante.</p>
-        <form id="form-profile">
-          <label>Preferencias de varietal</label>
-          <div class="row" id="prefs-options"></div>
-          <br>
-          <button type="submit" class="btn btn-gold">Guardar preferencias</button>
-        </form>
+    <!-- Badge de regalo -->
+    <div style="display:flex;align-items:center;gap:14px;padding:16px;background:linear-gradient(135deg, rgba(233,184,98,0.25), rgba(233,184,98,0.1));border-radius:14px;border:2px dashed var(--gold);margin-bottom:20px;">
+      <div style="font-size:3rem;animation:bounce 2s infinite;flex-shrink:0;">🎁</div>
+      <div>
+        <div style="font-size:1.4rem;font-weight:700;color:var(--gold);line-height:1;">+150 Puntos</div>
+        <div style="font-size:0.8rem;color:var(--gray);font-weight:600;">de regalo por completar</div>
       </div>
-      <div style="text-align:center;padding:24px;background:linear-gradient(135deg, rgba(233,184,98,0.25), rgba(233,184,98,0.1));border-radius:16px;flex:0 1 auto;min-width:140px;border:2px dashed var(--gold);position:relative;">
-        <div style="font-size:2.8rem;margin-bottom:6px;animation:bounce 2s infinite;">⭐</div>
-        <div style="font-size:2.4rem;font-weight:700;color:var(--gold);line-height:1;">+150</div>
-        <div style="font-size:0.8rem;color:var(--gray);font-weight:600;margin-top:8px;">Puntos</div>
-        <div style="font-size:0.7rem;color:var(--gold);margin-top:4px;">de regalo</div>
-      </div>
+    </div>
+    <!-- Form -->
+    <div>
+      <h3 style="margin-bottom:6px;">Completá tu perfil</h3>
+      <p class="muted">Elegí qué varietales preferís y sumá puntos al instante.</p>
+      <form id="form-profile">
+        <label>Preferencias de varietal</label>
+        <div class="row" id="prefs-options"></div>
+        <br>
+        <button type="submit" class="btn btn-gold">Guardar preferencias</button>
+      </form>
     </div>
   </div>
   <style>
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-10px); }
     }
   </style>
 
