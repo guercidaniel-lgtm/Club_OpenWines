@@ -40,9 +40,13 @@
     return String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
   function fmtDate(d) { return new Date(d).toLocaleDateString('es-AR'); }
-  // birthday es un `date` sin hora (ej. "1990-05-15"): formatear a mano
-  // evita que new Date() lo interprete como medianoche UTC y, con el huso
-  // horario de Argentina, muestre el día anterior.
+  function fmtDateTime(d) {
+    if (!d) return '—';
+    const date = new Date(d);
+    const dateStr = date.toLocaleDateString('es-AR');
+    const timeStr = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    return `${dateStr} ${timeStr}`;
+  }
   function fmtBirthday(d) {
     if (!d) return '';
     const [y, m, day] = d.split('-');
@@ -405,9 +409,6 @@
       const { orders } = await api('/api/admin-orders');
       $('#table-orders tbody').innerHTML = orders.map((o) => {
         const orderId = o.id.substring(0, 8).toUpperCase();
-        const createdTime = o.created_at ? new Date(o.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) : '—';
-        const confirmedTime = o.delivered_at ? new Date(o.delivered_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) : '—';
-
         return `
         <tr>
           <td>${escapeHtml(o.clients?.name || '')}</td>
@@ -418,8 +419,8 @@
           <td>${escapeHtml(o.status || 'Pendiente')}</td>
           <td style="font-size:0.85em;color:#666;">
             <strong>#${orderId}</strong><br>
-            📅 ${fmtDate(o.created_at)} ${createdTime}<br>
-            ${o.delivered_at ? `✓ ${fmtDate(o.delivered_at)} ${confirmedTime}` : '—'}
+            📅 ${fmtDateTime(o.created_at)}<br>
+            ${o.delivered_at ? `✓ ${fmtDateTime(o.delivered_at)}` : '—'}
           </td>
           <td style="display:flex;gap:6px;">
             ${o.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm-order" data-id="${o.id}" style="flex:1;padding:6px 12px;font-size:0.85em;">Confirmar</button>` : `<span class="muted" style="font-size:0.85em;">✓ ${o.status}</span>`}

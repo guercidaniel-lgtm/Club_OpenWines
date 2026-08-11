@@ -514,6 +514,11 @@
       appliedCoupon = null;
       $('#cart-modal').classList.add('hidden');
       $('#cart-bar').classList.add('hidden');
+
+      // Actualizar UI completamente: renderi grid de combos y carrito
+      if (state.combos && state.combos.length) {
+        renderCombos(state);
+      }
       renderCartBar();
       renderCartItems();
       toast('✅ Gracias por elegirnos. Te contactaremos vía WhatsApp para la entrega');
