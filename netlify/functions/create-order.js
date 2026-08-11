@@ -58,21 +58,23 @@ exports.handler = async (event) => {
     // Calcular puntos que se acreditarán después de entrega
     const pointsToAward = Math.floor(subtotal / 1000);
 
+    const orderBody = {
+      client_id: client.id,
+      combo_id: combo.id,
+      quantity,
+      subtotal,
+      referral_discount: referralDiscount,
+      coupon_discount: couponDiscount,
+      total: Math.max(total, 0),
+      payment_method: payment_method || null,
+      status: 'Pendiente',
+      points_awarded: 0,
+    };
+    if (couponCode) orderBody.coupon_code = couponCode;
+
     const created = await sb('orders', {
       method: 'POST',
-      body: JSON.stringify({
-        client_id: client.id,
-        combo_id: combo.id,
-        quantity,
-        subtotal,
-        referral_discount: referralDiscount,
-        coupon_discount: couponDiscount,
-        coupon_code: couponCode || null,
-        total: Math.max(total, 0),
-        payment_method: payment_method || null,
-        status: 'Pendiente',
-        points_awarded: 0,
-      }),
+      body: JSON.stringify(orderBody),
     });
 
     return json(200, { order: created[0], discountPercent, pointsToAward });
