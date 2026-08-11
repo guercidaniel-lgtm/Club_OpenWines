@@ -64,14 +64,8 @@ exports.handler = async (event) => {
         client_id: client.id,
         combo_id: combo.id,
         quantity,
-        subtotal,
-        referral_discount: referralDiscount,
-        coupon_discount: couponDiscount,
-        coupon_code: couponCode || null,
         total: Math.max(total, 0),
-        payment_method: payment_method || null,
         status: 'Pendiente',
-        points_awarded: 0,
       }),
     });
 
