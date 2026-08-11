@@ -50,6 +50,7 @@
   let countdownTimers = [];
   let cart = {}; // combo_id -> cantidad, para armar un pedido de varios combos antes de enviarlo
   let appliedCoupon = null; // cupón aplicado al carrito
+  let pollingInterval = null; // para actualizar puntos automáticamente
 
   const $ = (sel) => document.querySelector(sel);
   const loginScreen = $('#login-screen');
@@ -105,6 +106,7 @@
   });
 
   $('#btn-logout').addEventListener('click', () => {
+    if (pollingInterval) clearInterval(pollingInterval);
     localStorage.removeItem('ow_phone');
     location.reload();
   });
@@ -118,6 +120,18 @@
       loginScreen.classList.add('hidden');
       dashboard.classList.remove('hidden');
       $('#btn-logout').classList.remove('hidden');
+
+      // Iniciar polling para actualizar puntos cada 30 segundos
+      if (pollingInterval) clearInterval(pollingInterval);
+      pollingInterval = setInterval(async () => {
+        try {
+          const updated = await api(`/api/client-data?phone=${encodeURIComponent(phone)}`);
+          state = updated;
+          renderDashboard(updated);
+        } catch (err) {
+          // silenciar errores de polling
+        }
+      }, 30000);
     } catch (err) {
       localStorage.removeItem('ow_phone');
       toast(err.message);
