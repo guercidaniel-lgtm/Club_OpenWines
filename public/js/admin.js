@@ -411,7 +411,10 @@
           <td>${o.quantity}</td>
           <td>${fmtMoney(o.total)}</td>
           <td>${escapeHtml(o.status || 'Pendiente')}</td>
-          <td>${fmtDate(o.created_at)}</td>
+          <td style="font-size:0.85em;color:#666;">
+            📅 ${fmtDate(o.created_at)}<br>
+            ${o.delivered_at ? `✓ ${fmtDate(o.delivered_at)}` : '—'}
+          </td>
           <td style="display:flex;gap:6px;">
             ${o.status === 'Pendiente' ? `<button class="btn btn-gold btn-confirm-order" data-id="${o.id}" style="flex:1;padding:6px 12px;font-size:0.85em;">Confirmar</button>` : `<span class="muted" style="font-size:0.85em;">✓ ${o.status}</span>`}
           </td>
