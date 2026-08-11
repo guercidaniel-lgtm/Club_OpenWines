@@ -28,7 +28,7 @@ exports.handler = async (event) => {
       method: 'PATCH',
       body: JSON.stringify({
         status: 'Confirmado',
-        points_awarded: pointsToAward,
+        delivered_at: new Date().toISOString(),
       }),
     });
 
