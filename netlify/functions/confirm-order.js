@@ -2,7 +2,6 @@ const { sb } = require('./_supabase');
 const { requireAdmin } = require('./_auth');
 const { json } = require('./_http');
 
-// Confirmar un pedido: cambiar estado a "Confirmado" y acreditar puntos al cliente
 exports.handler = async (event) => {
   if (!requireAdmin(event)) return json(401, { error: 'No autorizado' });
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
@@ -15,55 +14,37 @@ exports.handler = async (event) => {
     if (!orders.length) return json(404, { error: 'Pedido no encontrado' });
     const order = orders[0];
 
-    // Si ya está confirmado, no hacer nada
     if (order.status === 'Confirmado') {
       return json(200, { order, alreadyConfirmed: true });
     }
 
-    // Calcular puntos: 1 punto cada $1000 del subtotal
     const pointsToAward = Math.floor(order.total / 1000);
 
-    // Actualizar pedido a "Confirmado"
-    const updatedOrder = await sb(`orders?id=eq.${order_id}`, {
+    // Actualizar orden
+    await sb(`orders?id=eq.${order_id}`, {
       method: 'PATCH',
       body: JSON.stringify({ status: 'Confirmado' }),
     });
 
-    // Acreditar puntos al cliente
-    const clients = await sb(`clients?id=eq.${order.client_id}&select=*`);
-    console.log('Client lookup:', { order_client_id: order.client_id, found: clients.length });
-
-    if (clients.length) {
+    // Acreditar puntos
+    const clients = await sb(`clients?id=eq.${order.client_id}&select=id,points,points_vigent`);
+    if (clients && clients.length) {
       const client = clients[0];
-      const newPoints = (client.points || 0) + pointsToAward;
-      const newPointsVigent = (client.points_vigent || 0) + pointsToAward;
+      const pts = parseInt(client.points || 0);
+      const ptsVig = parseInt(client.points_vigent || 0);
 
-      console.log('Updating client points:', {
-        client_id: client.id,
-        old_points: client.points,
-        old_points_vigent: client.points_vigent,
-        pointsToAward,
-        new_points: newPoints,
-        new_points_vigent: newPointsVigent,
-      });
-
-      const updatedClient = await sb(`clients?id=eq.${client.id}`, {
+      await sb(`clients?id=eq.${client.id}`, {
         method: 'PATCH',
         body: JSON.stringify({
-          points: newPoints,
-          points_vigent: newPointsVigent,
+          points: pts + pointsToAward,
+          points_vigent: ptsVig + pointsToAward,
         }),
       });
-
-      console.log('Client updated:', updatedClient);
     }
 
-    return json(200, {
-      order: updatedOrder[0],
-      pointsAwarded: pointsToAward,
-      message: `Pedido confirmado. ${pointsToAward} puntos acreditados.`
-    });
+    return json(200, { success: true, pointsAwarded: pointsToAward });
   } catch (err) {
-    return json(500, { error: err.message });
+    console.error('Error in confirm-order:', err);
+    return json(500, { error: err.message || 'Error desconocido' });
   }
 };
