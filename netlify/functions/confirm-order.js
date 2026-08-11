@@ -31,18 +31,38 @@ exports.handler = async (event) => {
 
     // Acreditar puntos al cliente
     const clients = await sb(`clients?id=eq.${order.client_id}&select=*`);
+    console.log('Client lookup:', { order_client_id: order.client_id, found: clients.length });
+
     if (clients.length) {
       const client = clients[0];
-      await sb(`clients?id=eq.${client.id}`, {
+      const newPoints = (client.points || 0) + pointsToAward;
+      const newPointsVigent = (client.points_vigent || 0) + pointsToAward;
+
+      console.log('Updating client points:', {
+        client_id: client.id,
+        old_points: client.points,
+        old_points_vigent: client.points_vigent,
+        pointsToAward,
+        new_points: newPoints,
+        new_points_vigent: newPointsVigent,
+      });
+
+      const updatedClient = await sb(`clients?id=eq.${client.id}`, {
         method: 'PATCH',
         body: JSON.stringify({
-          points: (client.points || 0) + pointsToAward,
-          points_vigent: (client.points_vigent || 0) + pointsToAward,
+          points: newPoints,
+          points_vigent: newPointsVigent,
         }),
       });
+
+      console.log('Client updated:', updatedClient);
     }
 
-    return json(200, { order: updatedOrder[0], pointsAwarded: pointsToAward });
+    return json(200, {
+      order: updatedOrder[0],
+      pointsAwarded: pointsToAward,
+      message: `Pedido confirmado. ${pointsToAward} puntos acreditados.`
+    });
   } catch (err) {
     return json(500, { error: err.message });
   }
