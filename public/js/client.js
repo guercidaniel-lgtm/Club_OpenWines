@@ -398,6 +398,7 @@
               <button type="button" class="qty-btn qty-minus" data-id="${id}">−</button>
               <span class="qty-value" data-qty-for="${id}">${qty}</span>
               <button type="button" class="qty-btn qty-plus" data-id="${id}">+</button>
+              <span style="margin-left:8px;font-size:1.2rem;">🛒</span>
             </div>
           </div>
           <div>$${subtotal.toLocaleString('es-AR')}</div>
@@ -465,15 +466,15 @@
     try {
       // Crear cada order en la BD
       for (const [combo_id, quantity] of entries) {
+        const orderData = {
+          phone: state.client.phone,
+          combo_id,
+          quantity,
+          payment_method: $('#cart-payment').value,
+        };
         await api('/api/create-order', {
           method: 'POST',
-          body: JSON.stringify({
-            phone: state.client.phone,
-            combo_id,
-            quantity,
-            payment_method: $('#cart-payment').value,
-            couponCode: appliedCoupon?.code || null,
-          }),
+          body: JSON.stringify(orderData),
         });
       }
 
