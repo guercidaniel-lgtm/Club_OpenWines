@@ -36,9 +36,8 @@ exports.handler = async (event) => {
       await sb(`clients?id=eq.${client.id}`, {
         method: 'PATCH',
         body: JSON.stringify({
-          points: client.points + pointsToAward,
-          points_vigent: client.points_vigent + pointsToAward,
-          last_purchase_at: new Date().toISOString(),
+          points: (client.points || 0) + pointsToAward,
+          points_vigent: (client.points_vigent || 0) + pointsToAward,
         }),
       });
     }
