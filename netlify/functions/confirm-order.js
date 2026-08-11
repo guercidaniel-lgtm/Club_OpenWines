@@ -20,10 +20,10 @@ exports.handler = async (event) => {
 
     const pointsToAward = Math.floor(order.total / 1000);
 
-    // Actualizar orden
+    // Actualizar orden: estado + timestamp de confirmación
     await sb(`orders?id=eq.${order_id}`, {
       method: 'PATCH',
-      body: JSON.stringify({ status: 'Confirmado' }),
+      body: JSON.stringify({ status: 'Confirmado', delivered_at: new Date().toISOString() }),
     });
 
     // Acreditar puntos (solo points por ahora)
