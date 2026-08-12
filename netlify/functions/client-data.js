@@ -16,7 +16,8 @@ exports.handler = async (event) => {
     const client = clients[0];
 
     // Usar puntos vigentes para calcular nivel (considera vigencia 12/24 meses)
-    const pointsForLevel = client.points_vigent !== null ? client.points_vigent : client.points;
+    // Si points_vigent es 0 o null, usar points
+    const pointsForLevel = (client.points_vigent || 0) > 0 ? client.points_vigent : client.points;
     const level = computeLevel(pointsForLevel);
     const { nextLevel, pointsToNext } = nextLevelInfo(pointsForLevel);
 
