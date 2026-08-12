@@ -569,7 +569,7 @@
       }
 
       const text = encodeURIComponent(
-        `Hola! ${friend_name} 🍷 Te quiero invitar al Club de Vinos de Open Wines.\n\nNo tiene costo mensual y vas a acceder a vinos seleccionados, promos y beneficios exclusivos.\n\nAdemás, arrancás con 10% OFF en tu primera compra 🎁\n\nSumate acá 👉 ${APP_URL}\n\nAbrazo!`
+        `Hola! amig@ 🍷 Te quiero invitar al Club de Vinos de Open Wines.\n\nNo tiene costo mensual y vas a acceder a vinos seleccionados, promos y beneficios exclusivos.\n\nAdemás, arrancás con 10% OFF en tu primera compra 🎁\n\nSumate acá 👉 ${APP_URL}\n\nAbrazo!`
       );
       window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
       $('#form-referral').reset();
