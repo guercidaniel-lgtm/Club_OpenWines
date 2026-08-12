@@ -460,20 +460,9 @@
         document.querySelectorAll('.btn-confirm-order').forEach((btn) => {
           btn.addEventListener('click', async () => {
             try {
-              const orderId = btn.dataset.id;
-              const result = await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: orderId }) });
+              const result = await api('/api/confirm-order', { method: 'POST', body: JSON.stringify({ order_id: btn.dataset.id }) });
               console.log('Confirm result:', result);
               toast('✅ Compra confirmada y puntos acreditados');
-
-              // Enviar mensaje de WhatsApp al cliente
-              const order = orders.find(o => o.id === orderId);
-              if (order && order.clients?.phone) {
-                const clientPhone = order.clients.phone;
-                const clientName = order.clients.name?.split(' ')[0] || 'amig@';
-                const whatsappMessage = encodeURIComponent(`Hola ${clientName}! 🍷\n\nRecibimos tu pedido, en breve te contactamos para la entrega.\n\nAbrazo!`);
-                window.open(`https://wa.me/${clientPhone}?text=${whatsappMessage}`, '_blank');
-              }
-
               loadOrders();
               loadClients();
             } catch (err) {
