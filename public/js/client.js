@@ -140,6 +140,7 @@
 
   function renderDashboard(data) {
     const { client, level, nextLevel, pointsToNext, welcomeDiscount } = data;
+    console.log('Rendering dashboard - nextLevel:', nextLevel, 'pointsToNext:', pointsToNext, 'client.points:', client.points);
     $('#client-name').textContent = `Hola, ${client.name.split(' ')[0]}`;
     $('#points-value').textContent = client.points;
     const badge = $('#level-badge');
