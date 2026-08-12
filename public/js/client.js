@@ -10,7 +10,7 @@
   const BENEFITS = {
     Bronce: '5% OFF en tu segunda compra + acumulación de puntos.',
     Plata: '5% beneficio adicional en todas tus compras + 5% descuento en eventos + doble puntos en cumpleaños.',
-    Oro: '7% beneficio adicional en todas tus compras + 10% descuento en eventos + en compras superiores a $95.000 envío gratuito + regalo de cumpleaños.',
+    Oro: '7% beneficio adicional en todas tus compras + 10% descuento en eventos + envío gratuito en compras superiores a $95.000 + regalo de cumpleaños.',
   };
   const LEVEL_INFO = [
     {
@@ -38,7 +38,7 @@
       benefits: [
         '🏷️ 7% de beneficio adicional sobre el precio vigente',
         '🎯 10% descuento en eventos organizados por Open Wines',
-        '🚚 En compras superiores a $95.000 envío gratuito',
+        '🚚 Envío gratuito en compras superiores a $95.000',
         '⭐ Acceso prioritario a lanzamientos y partidas limitadas',
         '🎁 Regalo especial de cumpleaños',
         '🎂 Doble acumulación de puntos en tu mes de cumpleaños'
