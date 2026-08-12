@@ -39,7 +39,7 @@
         '🏷️ 7% de beneficio adicional sobre el precio vigente',
         '🎯 10% descuento en eventos organizados por Open Wines',
         '🚚 Envío gratuito en compras superiores a $95.000',
-        '⭐ Acceso prioritario a lanzamientos y partidas limitadas',
+        '⏰ Acceso anticipado a promociones y lanzamientos',
         '🎁 Regalo especial de cumpleaños',
         '🎂 Doble acumulación de puntos en tu mes de cumpleaños'
       ]
