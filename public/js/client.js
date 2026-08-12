@@ -56,6 +56,11 @@
   const loginScreen = $('#login-screen');
   const dashboard = $('#dashboard');
 
+  function fmtMoney(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
   function toast(msg) {
     const el = $('#toast');
     el.textContent = msg;
@@ -212,6 +217,9 @@
       $('#prefs-card').classList.add('hidden');
     }
 
+    // Cargar pedidos del cliente
+    loadClientOrders(client.phone);
+
     renderLevelsModal(level);
     renderPrefsModal(client);
     renderCombos(data);
@@ -239,6 +247,75 @@
   }
   $('#btn-show-levels').addEventListener('click', () => $('#levels-modal').classList.remove('hidden'));
   $('#levels-close').addEventListener('click', () => $('#levels-modal').classList.add('hidden'));
+
+  // ---------- Pedidos ----------
+  async function loadClientOrders(phone) {
+    try {
+      const data = await api(`/api/client-orders?phone=${encodeURIComponent(phone)}`);
+      const { orders } = data;
+
+      if (!orders || orders.length === 0) {
+        $('#orders-card').classList.add('hidden');
+        return;
+      }
+
+      $('#orders-card').classList.remove('hidden');
+
+      const pending = orders.filter(o => o.status === 'Pendiente');
+      const completed = orders.filter(o => o.status === 'Confirmado');
+
+      function fmtOrderDate(d) {
+        if (!d) return '—';
+        const date = new Date(d);
+        return date.toLocaleDateString('es-AR');
+      }
+
+      const pendingHtml = pending.length === 0
+        ? '<div class="muted" style="font-size:0.9em;">No tienes pedidos en curso</div>'
+        : `<div style="display:flex;flex-direction:column;gap:12px;">
+            ${pending.map(o => `
+              <div style="background:var(--cream);padding:12px;border-radius:8px;border-left:4px solid var(--gold);">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                  <div>
+                    <div style="font-weight:600;color:var(--violet);">${escapeHtml(o.combos?.name || '')}</div>
+                    <div class="muted" style="font-size:0.85em;">Cantidad: ${o.quantity}</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-weight:600;color:var(--violet);">${fmtMoney(o.total)}</div>
+                    <div class="muted" style="font-size:0.85em;">${fmtOrderDate(o.created_at)}</div>
+                  </div>
+                </div>
+                <div class="muted" style="font-size:0.8em;">Estado: ${o.status}</div>
+              </div>
+            `).join('')}
+          </div>`;
+
+      const completedHtml = completed.length === 0
+        ? '<div class="muted" style="font-size:0.9em;">No tienes pedidos finalizados</div>'
+        : `<div style="display:flex;flex-direction:column;gap:12px;">
+            ${completed.map(o => `
+              <div style="background:var(--cream);padding:12px;border-radius:8px;border-left:4px solid var(--violet);">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                  <div>
+                    <div style="font-weight:600;color:var(--violet);">${escapeHtml(o.combos?.name || '')}</div>
+                    <div class="muted" style="font-size:0.85em;">Cantidad: ${o.quantity}</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-weight:600;color:var(--violet);">${fmtMoney(o.total)}</div>
+                    <div class="muted" style="font-size:0.85em;">✓ ${fmtOrderDate(o.delivered_at || o.created_at)}</div>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>`;
+
+      $('#orders-pending').innerHTML = pendingHtml;
+      $('#orders-completed').innerHTML = completedHtml;
+    } catch (err) {
+      console.error('Error loading orders:', err);
+      $('#orders-card').classList.add('hidden');
+    }
+  }
 
   // ---------- Preferencias de vino ----------
   function renderPrefsModal(client) {
