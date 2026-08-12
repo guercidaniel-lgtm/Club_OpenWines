@@ -45,8 +45,13 @@
     const date = new Date(d);
     if (isNaN(date.getTime())) return '—';
     const dateStr = date.toLocaleDateString('es-AR');
-    const hh = String(date.getHours()).padStart(2, '0');
-    const mm = String(date.getMinutes()).padStart(2, '0');
+    let hh = String(date.getHours()).padStart(2, '0');
+    let mm = String(date.getMinutes()).padStart(2, '0');
+    // Si viene solo con fecha (00:00), usar un horario razonable
+    if (hh === '00' && mm === '00') {
+      hh = '14'; // 2:00 PM por defecto
+      mm = '00';
+    }
     const timeStr = `${hh}:${mm}`;
     return `${dateStr} ${timeStr}`;
   }
