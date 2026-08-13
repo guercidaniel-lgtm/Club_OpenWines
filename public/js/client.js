@@ -261,6 +261,18 @@
 
       $('#orders-card').classList.remove('hidden');
 
+      // Agregar event listener al botón desplegable
+      const toggleBtn = $('#toggle-orders');
+      const content = $('#orders-content');
+      if (toggleBtn && !toggleBtn.hasListener) {
+        toggleBtn.addEventListener('click', () => {
+          const isHidden = content.classList.contains('hidden');
+          content.classList.toggle('hidden');
+          toggleBtn.setAttribute('aria-expanded', isHidden);
+        });
+        toggleBtn.hasListener = true;
+      }
+
       const pending = orders.filter(o => o.status === 'Pendiente');
       const completed = orders.filter(o => o.status === 'Confirmado');
 
