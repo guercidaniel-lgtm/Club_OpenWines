@@ -3,7 +3,7 @@ const { json } = require('./_http');
 
 const MAX_BYTES = 3 * 1024 * 1024; // 3MB — deja margen bajo el límite de payload de Netlify Functions
 const ALLOWED_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png' };
-const ALLOWED_BUCKETS = new Set(['combo-images', 'restaurant-images', 'moment-photos']);
+const ALLOWED_BUCKETS = new Set(['combo-images', 'restaurant-images', 'moment-photos', 'flyer-images']);
 
 // Sube una imagen (mandada en base64 desde el navegador) a uno de los
 // buckets públicos de Supabase Storage y devuelve la URL pública.
