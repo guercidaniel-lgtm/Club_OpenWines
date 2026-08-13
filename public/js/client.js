@@ -454,7 +454,7 @@
             </div>` : `
             <div class="qty-stepper">
               <button type="button" class="qty-btn qty-minus" data-id="${c.id}">−</button>
-              <span class="qty-value" data-qty-for="${c.id}">${cart[c.id] || 0}</span>
+              <span style="display:flex;align-items:center;gap:4px;"><span class="qty-value" data-qty-for="${c.id}">${cart[c.id] || 0}</span> 🛒</span>
               <button type="button" class="qty-btn qty-plus" data-id="${c.id}">+</button>
             </div>`}
         </div>
