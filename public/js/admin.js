@@ -432,7 +432,7 @@
         btn.addEventListener('click', async () => {
           if (!confirm('¿Eliminar este flyer?')) return;
           try {
-            await api('/api/admin-flyers', { method: 'POST', body: JSON.stringify({ flyer_id: btn.dataset.id }) });
+            await api('/api/admin-flyers', { method: 'DELETE', body: JSON.stringify({ flyer_id: btn.dataset.id }) });
             toast('✅ Flyer eliminado');
             loadFlyers();
           } catch (err) {
