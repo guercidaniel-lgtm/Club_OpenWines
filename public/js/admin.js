@@ -446,20 +446,14 @@
   $('#form-flyer').addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
-      const fileInput = $('#f-image');
-      let imageUrl = '';
+      const file = $('#f-image').files[0];
+      if (!file) { toast('Sube una imagen'); return; }
 
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append('file', file);
-        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData, headers: { 'x-admin-key': getAdminKey() } });
-        if (!uploadRes.ok) throw new Error('Error al subir imagen');
-        const uploadData = await uploadRes.json();
-        imageUrl = uploadData.url;
-      }
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subiendo imagen...';
 
-      if (!imageUrl) { toast('Sube una imagen'); return; }
+      const imageUrl = await uploadImage('flyer-images', file);
 
       await api('/api/admin-flyers', {
         method: 'POST',
@@ -472,9 +466,16 @@
       });
 
       e.target.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Crear flyer';
       toast('✅ Flyer creado');
       loadFlyers();
-    } catch (err) { toast(err.message); }
+    } catch (err) {
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Crear flyer';
+      toast(err.message);
+    }
   });
 
   // ---------- Pedidos ----------
