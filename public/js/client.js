@@ -220,6 +220,9 @@
     // Cargar pedidos del cliente
     loadClientOrders(client.phone);
 
+    // Cargar flyers
+    loadFlyers();
+
     renderLevelsModal(level);
     renderPrefsModal(client);
     renderCombos(data);
@@ -326,6 +329,35 @@
     } catch (err) {
       console.error('Error loading orders:', err);
       $('#orders-card').classList.add('hidden');
+    }
+  }
+
+  // ---------- Flyers ----------
+  async function loadFlyers() {
+    try {
+      const data = await api('/api/client-flyers');
+      const { flyers } = data;
+
+      if (!flyers || flyers.length === 0) {
+        $('#flyers-container').classList.add('hidden');
+        return;
+      }
+
+      $('#flyers-container').classList.remove('hidden');
+      $('#flyers-grid').innerHTML = flyers.map((f) => `
+        <div style="border-radius:8px;overflow:hidden;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+          <img src="${escapeHtml(f.image_url)}" alt="Flyer" style="width:100%;height:auto;display:block;max-height:300px;object-fit:cover;">
+          ${f.title || f.description ? `
+            <div style="padding:12px;">
+              ${f.title ? `<div style="font-weight:600;font-size:1rem;color:var(--violet);margin-bottom:6px;">${escapeHtml(f.title)}</div>` : ''}
+              ${f.description ? `<div class="muted" style="font-size:0.9em;">${escapeHtml(f.description)}</div>` : ''}
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('Error loading flyers:', err);
+      $('#flyers-container').classList.add('hidden');
     }
   }
 

@@ -76,6 +76,7 @@
   function loadTab(tab) {
     if (tab === 'clientes') loadClients();
     if (tab === 'combos') loadCombos();
+    if (tab === 'flyers') loadFlyers();
     if (tab === 'restaurantes') loadRestaurantsAdmin();
     if (tab === 'momentos') loadMoments();
     if (tab === 'pedidos') loadOrders();
@@ -409,6 +410,71 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Agregar momento';
     }
+  });
+
+  // ---------- Flyers ----------
+  async function loadFlyers() {
+    try {
+      const { flyers } = await api('/api/admin-flyers');
+      $('#flyers-admin-list').innerHTML = flyers.map((f) => `
+        <div style="border:1px solid #ddd;border-radius:8px;overflow:hidden;">
+          <img src="${escapeHtml(f.image_url)}" style="width:100%;height:150px;object-fit:cover;">
+          <div style="padding:8px;">
+            <div style="font-weight:600;font-size:0.9em;color:var(--violet);">${escapeHtml(f.title || '(sin título)')}</div>
+            <div class="muted" style="font-size:0.8em;margin:4px 0;">${escapeHtml(f.description || '(sin descripción)')}</div>
+            <div class="muted" style="font-size:0.75em;">Orden: ${f.display_order}</div>
+            <button class="btn btn-outline btn-delete-flyer" data-id="${f.id}" style="width:100%;margin-top:8px;padding:4px;font-size:0.8em;color:var(--red);border-color:var(--red);">Eliminar</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.btn-delete-flyer').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('¿Eliminar este flyer?')) return;
+          try {
+            await api('/api/admin-flyers', { method: 'POST', body: JSON.stringify({ flyer_id: btn.dataset.id }) });
+            toast('✅ Flyer eliminado');
+            loadFlyers();
+          } catch (err) {
+            toast(`Error: ${err.message}`);
+          }
+        });
+      });
+    } catch (err) { toast(err.message); }
+  }
+
+  $('#form-flyer').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const fileInput = $('#f-image');
+      let imageUrl = '';
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData, headers: { 'x-admin-key': getAdminKey() } });
+        if (!uploadRes.ok) throw new Error('Error al subir imagen');
+        const uploadData = await uploadRes.json();
+        imageUrl = uploadData.url;
+      }
+
+      if (!imageUrl) { toast('Sube una imagen'); return; }
+
+      await api('/api/admin-flyers', {
+        method: 'POST',
+        body: JSON.stringify({
+          image_url: imageUrl,
+          title: $('#f-title').value.trim() || null,
+          description: $('#f-description').value.trim() || null,
+          display_order: Number($('#f-order').value) || 0,
+        }),
+      });
+
+      e.target.reset();
+      toast('✅ Flyer creado');
+      loadFlyers();
+    } catch (err) { toast(err.message); }
   });
 
   // ---------- Pedidos ----------

@@ -214,3 +214,12 @@ on conflict (name) do nothing;
 -- delete from restaurants a using restaurants b
 --   where a.name = b.name and a.ctid > b.ctid;
 -- alter table restaurants add constraint restaurants_name_key unique (name);
+
+create table if not exists flyers (
+  id uuid primary key default gen_random_uuid(),
+  image_url text not null,
+  title text,
+  description text,
+  display_order integer not null default 0,
+  created_at timestamptz not null default now()
+);

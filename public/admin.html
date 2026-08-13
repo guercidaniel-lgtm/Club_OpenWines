@@ -23,6 +23,7 @@
   <div class="tabs">
     <button data-tab="clientes" class="active">Clientes</button>
     <button data-tab="importar">Importar</button>
+    <button data-tab="flyers">Flyers</button>
     <button data-tab="combos">Combos</button>
     <button data-tab="restaurantes">Restaurantes</button>
     <button data-tab="momentos">Momentos</button>
@@ -87,6 +88,27 @@
         <button class="btn btn-primary" id="btn-import-run">Importar</button>
       </div>
       <div id="import-results"></div>
+    </div>
+  </section>
+
+  <!-- FLYERS -->
+  <section id="tab-flyers" class="tab-panel hidden">
+    <div class="card">
+      <h3>Nuevo flyer</h3>
+      <form id="form-flyer">
+        <label for="f-image">Imagen (URL o subir)</label>
+        <input id="f-image" type="file" accept="image/jpeg,image/png" style="margin-bottom:12px;">
+        <div class="row">
+          <input id="f-title" placeholder="Título (opcional)" style="flex:1">
+          <input id="f-order" type="number" placeholder="Orden" value="0" style="flex:1">
+        </div>
+        <textarea id="f-description" placeholder="Descripción (opcional)" style="min-height:80px;"></textarea>
+        <button class="btn btn-primary" type="submit">Crear flyer</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Flyers cargados</h3>
+      <div id="flyers-admin-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;"></div>
     </div>
   </section>
 
